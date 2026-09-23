@@ -25,14 +25,50 @@ export default function Admin() {
         <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0 }}>Parish Admin</h1>
         <button className="btn-outline" onClick={() => supabase.auth.signOut()}>Sign Out</button>
       </div>
-      <NewsForm />
+      <NewsSection />
       <div style={{ height: 48 }} />
-      <BulletinForm />
+      <BulletinSection />
     </div>
   )
 }
 
-function NewsForm() {
+function NewsSection() {
+  const [posts, setPosts] = useState([])
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  useEffect(() => {
+    supabase.from('news_posts').select('*').order('published_at', { ascending: false })
+      .then(({ data }) => setPosts(data || []))
+  }, [refreshKey])
+
+  async function handleDelete(id) {
+    if (!window.confirm('Delete this news post? This can\'t be undone.')) return
+    await supabase.from('news_posts').delete().eq('id', id)
+    setRefreshKey(k => k + 1)
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <NewsForm onPublished={() => setRefreshKey(k => k + 1)} />
+      {posts.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ fontSize: 13, letterSpacing: '0.06em', color: 'var(--faint)', fontWeight: 700 }}>PUBLISHED NEWS</div>
+          {posts.map(p => (
+            <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', border: '1px solid var(--line)', borderRadius: 12 }}>
+              <div>
+                <div style={{ fontWeight: 700, fontSize: 15 }}>{p.title}</div>
+                <div style={{ fontSize: 13, color: 'var(--faint)' }}>{new Date(p.published_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+              </div>
+              <button onClick={() => handleDelete(p.id)} style={{ background: 'none', border: 'none', color: '#8B1E3F', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>Delete</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function NewsForm({ onPublished }) {
   const [title, setTitle] = useState('')
   const [excerpt, setExcerpt] = useState('')
   const [publishedAt, setPublishedAt] = useState(new Date().toISOString().slice(0, 10))
@@ -53,6 +89,7 @@ function NewsForm() {
     if (error) { setStatus('error'); return }
     setStatus('saved')
     setTitle(''); setExcerpt(''); setFile(null)
+    onPublished()
   }
 
   return (
@@ -77,7 +114,43 @@ function NewsForm() {
   )
 }
 
-function BulletinForm() {
+function BulletinSection() {
+  const [bulletins, setBulletins] = useState([])
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  useEffect(() => {
+    supabase.from('bulletins').select('*').order('issue_date', { ascending: false })
+      .then(({ data }) => setBulletins(data || []))
+  }, [refreshKey])
+
+  async function handleDelete(id) {
+    if (!window.confirm('Delete this bulletin? This can\'t be undone.')) return
+    await supabase.from('bulletins').delete().eq('id', id)
+    setRefreshKey(k => k + 1)
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <BulletinForm onUploaded={() => setRefreshKey(k => k + 1)} />
+      {bulletins.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ fontSize: 13, letterSpacing: '0.06em', color: 'var(--faint)', fontWeight: 700 }}>UPLOADED BULLETINS</div>
+          {bulletins.map(b => (
+            <div key={b.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', border: '1px solid var(--line)', borderRadius: 12 }}>
+              <div style={{ fontWeight: 700, fontSize: 15 }}>{new Date(b.issue_date).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                <a href={b.file_url} target="_blank" rel="noreferrer" className="textlink" style={{ fontSize: 13 }}>View</a>
+                <button onClick={() => handleDelete(b.id)} style={{ background: 'none', border: 'none', color: '#8B1E3F', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function BulletinForm({ onUploaded }) {
   const [issueDate, setIssueDate] = useState(new Date().toISOString().slice(0, 10))
   const [file, setFile] = useState(null)
   const [status, setStatus] = useState('idle')
@@ -94,6 +167,7 @@ function BulletinForm() {
     if (error) { setStatus('error'); return }
     setStatus('saved')
     setFile(null)
+    onUploaded()
   }
 
   return (
@@ -110,7 +184,7 @@ function BulletinForm() {
       <button type="submit" className="btn" style={{ background: 'var(--accent)' }} disabled={status === 'saving'}>
         {status === 'saving' ? 'Uploading…' : 'Upload Bulletin'}
       </button>
-      <p style={{ fontSize: 12, color: 'var(--faint)', margin: 0 }}>Bulletins older than 4 weeks stop appearing on the site automatically — no need to remove them yourself.</p>
+      <p style={{ fontSize: 12, color: 'var(--faint)', margin: 0 }}>Bulletins older than 4 weeks stop appearing on the public site automatically — no need to remove them yourself.</p>
       {status === 'saved' && <div style={{ color: '#2F5233', fontSize: 13 }}>Uploaded.</div>}
       {status === 'error' && <div style={{ color: '#8B1E3F', fontSize: 13 }}>Something went wrong — try again.</div>}
     </form>

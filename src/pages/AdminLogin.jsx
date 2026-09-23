@@ -7,6 +7,8 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
+  const [resetLoading, setResetLoading] = useState(false)
   const navigate = useNavigate()
 
   async function handleSubmit(e) {
@@ -19,6 +21,18 @@ export default function AdminLogin() {
     else navigate('/admin')
   }
 
+  async function handleForgotPassword() {
+    if (!email) { setError('Type your email above first, then click "Forgot password?"'); return }
+    setResetLoading(true)
+    setError('')
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/admin/reset`,
+    })
+    setResetLoading(false)
+    if (error) setError(error.message)
+    else setResetSent(true)
+  }
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--cream)' }}>
       <form onSubmit={handleSubmit} style={{ width: 360, background: '#fff', padding: 40, borderRadius: 20, display: 'flex', flexDirection: 'column', gap: 16, boxShadow: '0 20px 40px rgba(25,23,20,0.1)' }}>
@@ -27,8 +41,12 @@ export default function AdminLogin() {
         <input type="email" required placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
         <input type="password" required placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
         {error && <div style={{ color: '#8B1E3F', fontSize: 13 }}>{error}</div>}
+        {resetSent && <div style={{ color: '#2F5233', fontSize: 13 }}>Check your email for a reset link.</div>}
         <button type="submit" className="btn" style={{ background: 'var(--ink)', textAlign: 'center' }} disabled={loading}>
           {loading ? 'Signing in…' : 'Sign In'}
+        </button>
+        <button type="button" onClick={handleForgotPassword} disabled={resetLoading} style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: 13, fontWeight: 700, cursor: 'pointer', padding: 0 }}>
+          {resetLoading ? 'Sending…' : 'Forgot password?'}
         </button>
       </form>
     </div>
