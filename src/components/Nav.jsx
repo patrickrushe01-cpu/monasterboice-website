@@ -21,17 +21,20 @@ export default function Nav({ transparent = false }) {
       <Link to="/" style={{ fontSize: 20, fontWeight: 800, color: transparent ? '#fff' : 'var(--ink)' }}>
         Monasterboice Parish
       </Link>
-      <nav style={{ display: 'flex', alignItems: 'center', gap: 34, fontSize: 15, fontWeight: 600 }}>
-        {links.map(l => (
-          <Link
-            key={l.to}
-            to={l.to}
-            className="navlink"
-            style={{ color: transparent ? '#fff' : (pathname === l.to ? 'var(--accent)' : 'var(--ink)') }}
-          >
-            {l.label}
-          </Link>
-        ))}
+      <nav style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 15, fontWeight: 600 }}>
+        {links.map(l => {
+          const active = pathname === l.to
+          return (
+            <Link
+              key={l.to}
+              to={l.to}
+              className={`navlink ${transparent ? 'navlink-transparent' : 'navlink-solid'} ${active ? 'navlink-active' : ''}`}
+              style={{ color: active ? '#fff' : (transparent ? '#fff' : 'var(--ink)') }}
+            >
+              {l.label}
+            </Link>
+          )
+        })}
       </nav>
       <Link to="/contact" className="btn">Support Us</Link>
     </div>

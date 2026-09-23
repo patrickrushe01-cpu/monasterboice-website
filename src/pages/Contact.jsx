@@ -50,9 +50,10 @@ export default function Contact() {
           </form>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 28, minWidth: 260 }}>
-            <ChurchBlock label="CHURCH ONE" name="Church of the Immaculate Conception" address="Tenure, Dunleer, Co. Louth, A92 D344" />
+            <div style={{ fontSize: 13, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700 }}>CHURCHES IN THE PARISH</div>
+            <ChurchBlock name="The Church of The Immaculate Conception, Tenure (TEN)" address="Tenure, Dunleer, Co. Louth, A92 D344" />
             <div style={{ height: 1, background: 'var(--line)' }} />
-            <ChurchBlock label="CHURCH TWO" name="Church of the Nativity of Our Lady" address="Fieldstown, Co. Louth" />
+            <ChurchBlock name="The Church of The Nativity of Our Lady, Fieldstown (F/T)" address="Fieldstown, Co. Louth, A92 CH28" />
           </div>
         </div>
       </div>
@@ -70,10 +71,9 @@ function InfoCard({ label, value }) {
   )
 }
 
-function ChurchBlock({ label, name, address }) {
+function ChurchBlock({ name, address }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-      <div style={{ fontSize: 13, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700 }}>{label}</div>
       <div style={{ fontSize: 18, fontWeight: 700 }}>{name}</div>
       <div style={{ fontSize: 15, color: 'var(--muted)' }}>{address}</div>
     </div>

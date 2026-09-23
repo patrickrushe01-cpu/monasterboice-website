@@ -15,6 +15,10 @@ export default function Footer() {
           <div style={{ fontSize: 14, color: '#B5AC9C', lineHeight: 1.7 }}>
             Mon–Thu, 9am–1pm<br />087 379 1443<br />monasterboiceparishoffice@gmail.com
           </div>
+          <h3 style={{ fontSize: 14, color: 'var(--accent)', fontWeight: 700, margin: '14px 0 0' }}>Fr. Paddy Rushe</h3>
+          <div style={{ fontSize: 14, color: '#B5AC9C', lineHeight: 1.7 }}>
+            (086) 880 7470 (Via WhatsApp)<br />monasterboiceparishoffice@gmail.com
+          </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <h3 style={{ fontSize: 14, color: 'var(--accent)', fontWeight: 700, margin: 0 }}>Quick links</h3>
@@ -28,7 +32,7 @@ export default function Footer() {
       </div>
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20, display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#7A7367', flexWrap: 'wrap', gap: 8 }}>
         <div>© {new Date().getFullYear()} Monasterboice Parish, Archdiocese of Armagh</div>
-        <div>Church of the Immaculate Conception, Tenure · Church of the Nativity of Our Lady, Fieldstown</div>
+        <div>The Church of The Immaculate Conception, Tenure (TEN) · The Church of The Nativity of Our Lady, Fieldstown (F/T)</div>
       </div>
     </div>
   )
