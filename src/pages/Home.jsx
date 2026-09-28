@@ -60,13 +60,17 @@ export default function Home() {
 
       <div style={{ padding: '0 64px', display: 'flex', justifyContent: 'center', transform: 'translateY(-40px)' }}>
         <div style={{ width: '100%', maxWidth: 1180, background: '#fff', borderRadius: 20, boxShadow: '0 20px 40px rgba(25,23,20,0.14)', padding: '34px 44px', display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 32 }}>
-          <div>
-            <div style={{ fontSize: 12, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700, marginBottom: 8 }}>WEEKDAY MASSES</div>
-            <div style={{ fontSize: 15, lineHeight: 1.7 }}>Tenure (TEN) — Tue 9.30am, Fri 7pm<br />Fieldstown (F/T) — Wed 9.30am</div>
-          </div>
+          <MassColumn
+            name="The Church of The Immaculate Conception, Tenure (TEN)"
+            weekday="Tue 9.30am, Fri 7pm"
+            weekend="Sun 11.30am"
+          />
           <div style={{ borderLeft: '1px solid var(--line)', borderRight: '1px solid var(--line)', padding: '0 32px' }}>
-            <div style={{ fontSize: 12, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700, marginBottom: 8 }}>WEEKEND MASSES</div>
-            <div style={{ fontSize: 15, lineHeight: 1.7 }}>Fieldstown (F/T) — Sun 9.45am<br />Tenure (TEN) — Sun 11.30am</div>
+            <MassColumn
+              name="The Church of The Nativity of Our Lady, Fieldstown (F/T)"
+              weekday="Wed 9.30am"
+              weekend="Sun 9.45am"
+            />
           </div>
           <div>
             <div style={{ fontSize: 12, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700, marginBottom: 8 }}>CONFESSIONS &amp; ADORATION</div>
@@ -85,10 +89,10 @@ export default function Home() {
       </div>
 
       <Section
-        tag="WEDDINGS & FUNERALS"
-        title="Marking life's biggest moments together"
-        text="Weddings and funerals are arranged directly with the parish office. We're here to walk with your family through both joyful and difficult days."
-        linkTo="/sacraments" linkLabel="Plan a wedding or funeral"
+        tag="PARISH LIFE"
+        title="Celebrating and grieving, together"
+        text="From weddings and funerals to first Communions and community days, the parish walks with families through every stage of life. Weddings and funerals are arranged directly with the parish office."
+        linkTo="/sacraments" linkLabel="Weddings, funerals and sacraments"
         image="/images/wedding.jpg"
       />
       <Section
@@ -100,10 +104,10 @@ export default function Home() {
         image="/images/feast-fieldstown.jpg"
       />
       <Section
-        tag="PARISH LIFE"
-        title="Every celebration, every gathering, one family"
-        text="From ordinations and jubilees to first Communions and community days, the parish comes together often — here's a look at what's been happening lately."
-        linkTo="/news" linkLabel="See the latest from the parish"
+        tag="LATEST FROM THE PARISH"
+        title="What's been happening lately"
+        text="Ordinations, jubilees, cemetery blessings and community days — catch up on recent news from both churches."
+        linkTo="/news" linkLabel="Read the latest news"
         image="/images/ordination.jpg"
       />
 
@@ -141,6 +145,19 @@ export default function Home() {
       </div>
 
       <Footer />
+    </div>
+  )
+}
+
+function MassColumn({ name, weekday, weekend }) {
+  const label = { color: 'var(--accent)', fontWeight: 700, fontSize: 12, letterSpacing: '0.08em' }
+  return (
+    <div>
+      <div style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.4, marginBottom: 10 }}>{name}</div>
+      <div style={{ fontSize: 15, lineHeight: 1.7 }}>
+        <span style={label}>WEEKDAY </span>{weekday}<br />
+        <span style={label}>WEEKEND </span>{weekend}
+      </div>
     </div>
   )
 }
