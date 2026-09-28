@@ -50,3 +50,17 @@ create policy "Admins read contact" on contact_messages for select using (auth.r
 
 -- Storage bucket for bulletin PDFs and news photos (create in Supabase dashboard or via API):
 -- bucket name: parish-media (public read, authenticated write)
+
+-- ---------- In-page editing (site_content) ----------
+-- Holds text/photo edits made via "Edit this page". Key = element id (e.g. "home.hero.title").
+create table if not exists public.site_content (
+  key text primary key,
+  value text not null,
+  updated_at timestamptz not null default now(),
+  updated_by uuid references auth.users(id) on delete set null default auth.uid()
+);
+alter table public.site_content enable row level security;
+create policy "Public read site_content" on public.site_content for select to anon, authenticated using (true);
+create policy "Admins insert site_content" on public.site_content for insert to authenticated with check (true);
+create policy "Admins update site_content" on public.site_content for update to authenticated using (true) with check (true);
+create policy "Admins delete site_content" on public.site_content for delete to authenticated using (true);

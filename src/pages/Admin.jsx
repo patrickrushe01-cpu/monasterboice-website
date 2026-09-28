@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient.js'
 
 export default function Admin() {
@@ -24,6 +24,13 @@ export default function Admin() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
         <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0 }}>Parish Admin</h1>
         <button className="btn-outline" onClick={() => supabase.auth.signOut()}>Sign Out</button>
+      </div>
+      <div style={{ background: 'var(--cream)', borderRadius: 16, padding: '22px 28px', marginBottom: 40, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap' }}>
+        <div>
+          <div style={{ fontWeight: 800, fontSize: 16, marginBottom: 4 }}>Edit the wording and photos on any page</div>
+          <div style={{ fontSize: 14, color: 'var(--muted)' }}>While you're signed in, open any page of the site and press "Edit this page" (bottom right). Click any text to change it, then Save.</div>
+        </div>
+        <Link to="/" className="btn">Go to the site and edit</Link>
       </div>
       <NewsSection />
       <div style={{ height: 48 }} />

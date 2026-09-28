@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Nav from '../components/Nav.jsx'
 import Footer from '../components/Footer.jsx'
+import { Editable } from '../lib/content.jsx'
 import { supabase } from '../lib/supabaseClient.js'
 
 export default function Bulletins() {
@@ -24,10 +25,9 @@ export default function Bulletins() {
       <Nav />
       <div style={{ background: 'var(--cream)', padding: '56px 64px', display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ fontSize: 13, color: 'var(--faint)' }}>Home / Bulletins</div>
-        <h1 style={{ fontSize: 40, fontWeight: 800, margin: 0 }}>Parish Bulletins</h1>
-        <p style={{ fontSize: 16, color: 'var(--muted)', maxWidth: 620, margin: 0 }}>
-          This week's bulletin, plus the last four weeks for anyone catching up. Older bulletins are archived by the parish office on request.
-        </p>
+        <Editable as="h1" id="bulletins.title" def="Parish Bulletins" multiline={false} style={{ fontSize: 40, fontWeight: 800, margin: 0 }} />
+        <Editable as="p" id="bulletins.intro" def="This week's bulletin, plus the last four weeks for anyone catching up. Older bulletins are archived by the parish office on request."
+          style={{ fontSize: 16, color: 'var(--muted)', maxWidth: 620, margin: 0 }} />
       </div>
 
       {latest ? (

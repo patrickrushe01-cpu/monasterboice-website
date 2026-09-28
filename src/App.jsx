@@ -8,9 +8,11 @@ import Admin from './pages/Admin.jsx'
 import AdminLogin from './pages/AdminLogin.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
 import NotFound from './pages/NotFound.jsx'
+import { ContentProvider, EditBar } from './lib/content.jsx'
 
 export default function App() {
   return (
+    <ContentProvider>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/news" element={<News />} />
@@ -22,5 +24,7 @@ export default function App() {
       <Route path="/admin" element={<Admin />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
+    <EditBar />
+    </ContentProvider>
   )
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Nav from '../components/Nav.jsx'
 import Footer from '../components/Footer.jsx'
+import { Editable } from '../lib/content.jsx'
 import { supabase } from '../lib/supabaseClient.js'
 
 const placeholder = [
@@ -28,8 +29,8 @@ export default function News() {
       <Nav />
       <div style={{ background: 'var(--cream)', padding: '56px 64px', display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ fontSize: 13, color: 'var(--faint)' }}>Home / News</div>
-        <h1 style={{ fontSize: 40, fontWeight: 800, margin: 0 }}>Parish News</h1>
-        <p style={{ fontSize: 16, color: 'var(--muted)', maxWidth: 560, margin: 0 }}>Updates, events, and notices from Tenure and Fieldstown.</p>
+        <Editable as="h1" id="news.title" def="Parish News" multiline={false} style={{ fontSize: 40, fontWeight: 800, margin: 0 }} />
+        <Editable as="p" id="news.intro" def="Updates, events, and notices from Tenure and Fieldstown." style={{ fontSize: 16, color: 'var(--muted)', maxWidth: 560, margin: 0 }} />
       </div>
 
       <div style={{ padding: '32px 64px 80px', display: 'flex', justifyContent: 'center' }}>

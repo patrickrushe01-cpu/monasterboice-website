@@ -27,6 +27,15 @@ at WordPress and will be switched over later, once content is finalized.
   - "The Church of The Nativity of Our Lady, Fieldstown (F/T)"
   - Short form "Tenure (TEN)" / "Fieldstown (F/T)" for compact contexts (mass times etc.)
 
+## In-page editing (WYSIWYG)
+- Signed-in staff see an "Edit this page" button (bottom right). Text becomes clickable; photos get "Change photo".
+- Edits are saved to the Supabase table `site_content` (key = element id, value = text or image URL) and override
+  the defaults written in the code. Public visitors only ever read; only authenticated users can write (RLS).
+- Core code is `src/lib/content.jsx`: `<Editable id="..." def="...">` for text, `<EditableImg>` / `<ChangePhoto>` for photos,
+  `<SmartLink>` for links that must not navigate while editing. The homepage quote band is stored as JSON under `home.quotes`.
+- To make NEW text editable, wrap it in `<Editable>` with a unique id and the current wording as `def`.
+  Layout/structure changes still need code.
+
 ## Deployment workflow
 - GitHub repo: patrickrushe01-cpu/monasterboice-website, connected to Vercel for auto-deploy on push to `main`
 - Standard flow: edit files → `npm run build` to confirm no errors → `git add . && git commit -m "..." && git push`
