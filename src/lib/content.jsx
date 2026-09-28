@@ -19,6 +19,15 @@ function readCache() {
   try { return JSON.parse(localStorage.getItem(CACHE_KEY)) || {} } catch { return {} }
 }
 
+// Only allow normal web/mail/phone/site links (blocks javascript: etc.); adds https:// if missing
+export function safeUrl(v) {
+  const t = String(v ?? '').trim()
+  if (!t) return ''
+  if (/^(javascript|data|vbscript):/i.test(t)) return ''
+  if (/^(https?:\/\/|mailto:|tel:|\/)/i.test(t)) return t
+  return 'https://' + t
+}
+
 // Shrink big phone photos before upload so pages stay fast (max 2000px wide, JPEG)
 async function resizeImage(file, maxW = 2000) {
   const url = URL.createObjectURL(file)
@@ -121,10 +130,25 @@ export function ContentProvider({ children }) {
     }
   }, [setDraft])
 
+  const uploadFile = useCallback(async (id, file) => {
+    setMessage('Uploading file…')
+    try {
+      const ext = (file.name.split('.').pop() || 'pdf').toLowerCase().replace(/[^a-z0-9]/g, '')
+      const path = `site/files/${id.replace(/[^a-z0-9]+/gi, '-')}-${Date.now()}.${ext}`
+      const { error } = await supabase.storage.from('parish-media').upload(path, file, { contentType: file.type || 'application/pdf' })
+      if (error) throw error
+      const url = supabase.storage.from('parish-media').getPublicUrl(path).data.publicUrl
+      setDraft(`${id}.url`, url)
+      setMessage('File added — press Save to publish it.')
+    } catch (e) {
+      setMessage('File upload failed: ' + (e.message || e))
+    }
+  }, [setDraft])
+
   const value = useMemo(() => ({
-    get, setDraft, save, discard, uploadImage,
+    get, setDraft, save, discard, uploadImage, uploadFile,
     editing, setEditing, canEdit: !!session, saving, dirty, message, setMessage,
-  }), [get, setDraft, save, discard, uploadImage, editing, session, saving, dirty, message])
+  }), [get, setDraft, save, discard, uploadImage, uploadFile, editing, session, saving, dirty, message])
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }
@@ -206,6 +230,68 @@ export function EditableImg({ id, def, alt = '', style, wrapperStyle }) {
     <div style={{ position: 'relative', ...wrapperStyle }}>
       <img src={c.get(id, def)} alt={alt} style={{ display: 'block', width: '100%', ...style }} />
       <ChangePhoto id={id} style={{ position: 'absolute', right: 14, bottom: 14 }} />
+    </div>
+  )
+}
+
+/* A button/link whose web address can be changed (or a PDF uploaded) while editing.
+   Hidden from visitors if no address is set. */
+export function LinkButton({ id, def = '', className = 'btn', style, children }) {
+  const c = useContent()
+  const url = safeUrl(c.get(`${id}.url`, def))
+  const fileInput = useRef(null)
+  if (!c.editing) {
+    if (!url) return null
+    return <a href={url} target="_blank" rel="noreferrer" className={className} style={style}>{children}</a>
+  }
+  return (
+    <span style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
+      <span className={className} style={{ ...style, cursor: 'default' }}>{children}</span>
+      <span className="edit-link-tools">
+        <button
+          type="button"
+          className="edit-chip"
+          onClick={() => {
+            const v = window.prompt('Web address this button should open (for example https://…):', url)
+            if (v === null) return
+            const next = safeUrl(v)
+            if (next !== url) c.setDraft(`${id}.url`, next)
+          }}
+        >
+          Change link
+        </button>
+        <button type="button" className="edit-chip" onClick={() => fileInput.current?.click()}>Upload a PDF instead</button>
+        <input
+          ref={fileInput}
+          type="file"
+          accept="application/pdf"
+          hidden
+          onChange={e => {
+            const f = e.target.files[0]
+            if (f) c.uploadFile(id, f)
+            e.target.value = ''
+          }}
+        />
+        <span className="edit-chip-note">
+          {url ? `Opens: ${url.length > 60 ? url.slice(0, 57) + '…' : url}` : 'No link set yet — visitors won’t see this button until you add one.'}
+        </span>
+      </span>
+    </span>
+  )
+}
+
+/* A list kept as plain lines of text (one item per line). Visitors get `render(lines)`;
+   editors get a simple typeable box. */
+export function EditableLines({ id, def, render }) {
+  const c = useContent()
+  const value = c.get(id, def)
+  if (!c.editing) return render(value.split('\n').map(l => l.trim()).filter(Boolean))
+  return (
+    <div>
+      <EditText as="div" value={value} onCommit={t => c.setDraft(id, t)} style={{ lineHeight: 1.9, fontSize: 15 }} />
+      <div style={{ fontSize: 12, color: 'var(--faint)', marginTop: 8 }}>
+        One per line. For people, write “Name — Role”. Press Enter for a new line.
+      </div>
     </div>
   )
 }

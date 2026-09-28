@@ -7,6 +7,7 @@ import Contact from './pages/Contact.jsx'
 import Admin from './pages/Admin.jsx'
 import AdminLogin from './pages/AdminLogin.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
+import SupportUs from './pages/SupportUs.jsx'
 import NotFound from './pages/NotFound.jsx'
 import { ContentProvider, EditBar } from './lib/content.jsx'
 
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/bulletins" element={<Bulletins />} />
       <Route path="/sacraments" element={<Sacraments />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/support" element={<SupportUs />} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin/reset" element={<ResetPassword />} />
       <Route path="/admin" element={<Admin />} />

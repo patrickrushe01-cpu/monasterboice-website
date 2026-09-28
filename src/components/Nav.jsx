@@ -36,7 +36,7 @@ export default function Nav({ transparent = false }) {
           )
         })}
       </nav>
-      <Link to="/contact" className="btn">Support Us</Link>
+      <Link to="/support" className="btn">Support Us</Link>
     </div>
   )
 }

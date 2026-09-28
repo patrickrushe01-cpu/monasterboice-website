@@ -35,6 +35,8 @@ export default function Admin() {
       <NewsSection />
       <div style={{ height: 48 }} />
       <BulletinSection />
+      <div style={{ height: 48 }} />
+      <AccountsSection />
     </div>
   )
 }
@@ -195,5 +197,75 @@ function BulletinForm({ onUploaded }) {
       {status === 'saved' && <div style={{ color: '#2F5233', fontSize: 13 }}>Uploaded.</div>}
       {status === 'error' && <div style={{ color: '#8B1E3F', fontSize: 13 }}>Something went wrong — try again.</div>}
     </form>
+  )
+}
+
+function AccountsSection() {
+  const [rows, setRows] = useState([])
+  const [refreshKey, setRefreshKey] = useState(0)
+  const [year, setYear] = useState(new Date().getFullYear() - 1)
+  const [file, setFile] = useState(null)
+  const [status, setStatus] = useState('idle')
+
+  useEffect(() => {
+    supabase.from('parish_accounts').select('*').order('year', { ascending: false })
+      .then(({ data }) => setRows(data || []))
+  }, [refreshKey])
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    if (!file) return
+    setStatus('saving')
+    const path = `accounts/${year}-parish-accounts-${Date.now()}.pdf`
+    const { error: upErr } = await supabase.storage.from('parish-media').upload(path, file, { contentType: 'application/pdf' })
+    if (upErr) { setStatus('error'); return }
+    const file_url = supabase.storage.from('parish-media').getPublicUrl(path).data.publicUrl
+    const { error } = await supabase.from('parish_accounts').upsert([{ year: Number(year), file_url }], { onConflict: 'year' })
+    if (error) { setStatus('error'); return }
+    setStatus('saved')
+    setFile(null)
+    setRefreshKey(k => k + 1)
+  }
+
+  async function handleDelete(id, y) {
+    if (!window.confirm(`Remove the ${y} accounts from the website? This can't be undone.`)) return
+    await supabase.from('parish_accounts').delete().eq('id', id)
+    setRefreshKey(k => k + 1)
+  }
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <form onSubmit={handleSubmit} style={{ background: 'var(--cream)', padding: 28, borderRadius: 16, display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0 }}>Parish accounts (Support Us page)</h2>
+        <label style={{ fontSize: 13, color: 'var(--muted)' }}>
+          Year of the accounts
+          <input required type="number" min="2000" max="2100" value={year} onChange={e => setYear(e.target.value)} style={{ marginTop: 6 }} />
+        </label>
+        <label style={{ fontSize: 13, color: 'var(--muted)' }}>
+          Accounts PDF
+          <input required type="file" accept="application/pdf" onChange={e => setFile(e.target.files[0])} style={{ border: 'none', padding: '8px 0' }} />
+        </label>
+        <button type="submit" className="btn" style={{ background: 'var(--accent)' }} disabled={status === 'saving'}>
+          {status === 'saving' ? 'Uploading…' : 'Upload accounts'}
+        </button>
+        <p style={{ fontSize: 12, color: 'var(--faint)', margin: 0 }}>The newest year is shown as "Latest accounts"; earlier years are listed beneath it. Uploading a year that already exists replaces it.</p>
+        {status === 'saved' && <div style={{ color: '#2F5233', fontSize: 13 }}>Uploaded.</div>}
+        {status === 'error' && <div style={{ color: '#8B1E3F', fontSize: 13 }}>Something went wrong — try again.</div>}
+      </form>
+      {rows.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ fontSize: 13, letterSpacing: '0.06em', color: 'var(--faint)', fontWeight: 700 }}>UPLOADED ACCOUNTS</div>
+          {rows.map(r => (
+            <div key={r.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', border: '1px solid var(--line)', borderRadius: 12 }}>
+              <div style={{ fontWeight: 700, fontSize: 15 }}>{r.year}</div>
+              <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                <a href={r.file_url} target="_blank" rel="noreferrer" className="textlink" style={{ fontSize: 13 }}>View</a>
+                <button onClick={() => handleDelete(r.id, r.year)} style={{ background: 'none', border: 'none', color: '#8B1E3F', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }

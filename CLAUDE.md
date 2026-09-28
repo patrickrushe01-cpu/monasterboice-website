@@ -33,8 +33,17 @@ at WordPress and will be switched over later, once content is finalized.
   the defaults written in the code. Public visitors only ever read; only authenticated users can write (RLS).
 - Core code is `src/lib/content.jsx`: `<Editable id="..." def="...">` for text, `<EditableImg>` / `<ChangePhoto>` for photos,
   `<SmartLink>` for links that must not navigate while editing. The homepage quote band is stored as JSON under `home.quotes`.
+- `<LinkButton id="..." def="https://...">` is a button whose web address (or an uploaded PDF) can be changed while editing;
+  it hides itself from visitors if no address is set. `<EditableLines>` edits a list as one-item-per-line text.
 - To make NEW text editable, wrap it in `<Editable>` with a unique id and the current wording as `def`.
   Layout/structure changes still need code.
+
+## Support Us page (`/support`)
+- Ways to give (envelopes, online giving via the Archdiocese of Armagh Payzone link, bank transfer, legacies), Charitable
+  Donation Scheme / CHY3 tax relief, parish accounts, fees & charges (amounts deliberately NOT stated — "contact the Parish Office"),
+  Parish Finance Council members, and finance enquiries.
+- Parish accounts PDFs live in the `parish_accounts` table (year + file_url), uploaded from the Admin page; latest year is featured.
+- `vercel.json` redirects old WordPress addresses (/support-the-parish, /contact-us, /parish-bulletin, /latest-news, /welcome).
 
 ## Deployment workflow
 - GitHub repo: patrickrushe01-cpu/monasterboice-website, connected to Vercel for auto-deploy on push to `main`

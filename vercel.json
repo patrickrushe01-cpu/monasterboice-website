@@ -1,3 +1,60 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "redirects": [
+    {
+      "source": "/support-the-parish",
+      "destination": "/support",
+      "permanent": true
+    },
+    {
+      "source": "/support-the-parish/",
+      "destination": "/support",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us/",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/parish-bulletin",
+      "destination": "/bulletins",
+      "permanent": true
+    },
+    {
+      "source": "/parish-bulletin/",
+      "destination": "/bulletins",
+      "permanent": true
+    },
+    {
+      "source": "/latest-news",
+      "destination": "/news",
+      "permanent": true
+    },
+    {
+      "source": "/latest-news/",
+      "destination": "/news",
+      "permanent": true
+    },
+    {
+      "source": "/welcome",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/welcome/",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }

@@ -151,3 +151,18 @@ input, textarea {
   font-family: 'Manrope', sans-serif;
   cursor: pointer;
 }
+
+.edit-link-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.edit-chip {
+  background: #fff;
+  color: var(--ink);
+  border: 1.5px solid var(--accent);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+}
+.edit-chip:hover { background: var(--accent); color: #fff; }
+.edit-chip-note { font-size: 12px; color: var(--faint); }

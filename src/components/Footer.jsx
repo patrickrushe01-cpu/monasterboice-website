@@ -23,7 +23,7 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 14, color: '#B5AC9C' }}>
             <SmartLink to="/bulletins" className="navlink"><Editable id="footer.l1" def="Parish Bulletins" multiline={false} /></SmartLink>
             <SmartLink to="/news" className="navlink"><Editable id="footer.l2" def="Latest News" multiline={false} /></SmartLink>
-            <SmartLink to="/contact" className="navlink"><Editable id="footer.l3" def="Support the Parish" multiline={false} /></SmartLink>
+            <SmartLink to="/support" className="navlink"><Editable id="footer.l3" def="Support the Parish" multiline={false} /></SmartLink>
             <SmartLink to="/contact" className="navlink"><Editable id="footer.l4" def="Contact Us" multiline={false} /></SmartLink>
           </div>
         </div>

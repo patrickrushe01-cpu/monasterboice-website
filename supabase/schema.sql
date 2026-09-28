@@ -64,3 +64,16 @@ create policy "Public read site_content" on public.site_content for select to an
 create policy "Admins insert site_content" on public.site_content for insert to authenticated with check (true);
 create policy "Admins update site_content" on public.site_content for update to authenticated using (true) with check (true);
 create policy "Admins delete site_content" on public.site_content for delete to authenticated using (true);
+
+-- ---------- Parish accounts (Support Us page) ----------
+create table if not exists public.parish_accounts (
+  id uuid primary key default gen_random_uuid(),
+  year int not null unique check (year between 2000 and 2100),
+  file_url text not null,
+  created_at timestamptz not null default now()
+);
+alter table public.parish_accounts enable row level security;
+create policy "Public read parish_accounts" on public.parish_accounts for select to anon, authenticated using (true);
+create policy "Admins insert parish_accounts" on public.parish_accounts for insert to authenticated with check (true);
+create policy "Admins update parish_accounts" on public.parish_accounts for update to authenticated using (true) with check (true);
+create policy "Admins delete parish_accounts" on public.parish_accounts for delete to authenticated using (true);
