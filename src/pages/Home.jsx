@@ -4,62 +4,12 @@ import Nav from '../components/Nav.jsx'
 import Footer from '../components/Footer.jsx'
 import { supabase } from '../lib/supabaseClient.js'
 
-// Quotes for the rotating band on the homepage — mostly Irish saints and Church documents.
-// Translations of older texts vary; "(attributed)" marks sayings handed down by tradition.
+// PLACEHOLDER quotes — Paddy will supply the real set (Scripture + saints) and
+// real parish-life photos to rotate through. Swap this array out when ready.
 const heroQuotes = [
-  { text: 'Christ with me, Christ before me, Christ behind me, Christ in me, Christ beneath me, Christ above me.', source: "St Patrick's Breastplate" },
-  { text: 'I arise today through a mighty strength, the invocation of the Trinity.', source: "St Patrick's Breastplate" },
-  { text: 'I am greatly God\'s debtor, who gave me such grace that through me many people were reborn in God.', source: 'St Patrick, Confessio' },
-  { text: 'I would like a great lake of ale for the King of Kings; I would like the people of heaven to be drinking it through all time.', source: 'St Brigid (attributed)' },
-  { text: 'My children, this is my last word to you: be at peace, and have sincere love for one another.', source: 'St Colmcille, as told by Adomnán' },
-  { text: 'If you wish to know the Creator, learn to know His creation.', source: 'St Columbanus (attributed)' },
-  { text: 'If you take away freedom, you take away dignity.', source: 'St Columbanus (attributed)' },
-  { text: 'Shall I abandon, O King of mysteries, the soft comforts of home? Shall I turn my back on my native land, and my face towards the sea?', source: 'Prayer of St Brendan (attributed)' },
-  { text: 'Three things please God most: true faith with a pure heart, a simple life with a grateful spirit, and generosity inspired by charity.', source: 'St Ita (attributed)' },
-  { text: 'The highest recommendation of his teaching was that he taught nothing he did not live.', source: 'St Bede, of St Aidan' },
-  { text: 'I do forgive all who had a hand, directly or indirectly, in my death.', source: 'St Oliver Plunkett, Archbishop of Armagh, 1681' },
-  { text: 'The poor need help today, not next week.', source: 'Venerable Catherine McAuley' },
-  { text: 'There are three things the poor prize more highly than gold: the kind word, the gentle compassionate look, and the patient hearing of their sorrows.', source: 'Venerable Catherine McAuley' },
-  { text: 'If I could be of any service in saving souls in any part of the globe, I would willingly do all in my power.', source: 'Venerable Nano Nagle' },
-  { text: 'Not words, but deeds.', source: 'Venerable Nano Nagle (attributed)' },
-  { text: 'Never be too hard on the man who can\'t give up drink. It is hard — but it is possible, and even easy, for Our Lord.', source: 'Venerable Matt Talbot' },
-  { text: 'Be Thou my vision, O Lord of my heart; naught be all else to me, save that Thou art.', source: 'Ancient Irish hymn, Rop tú mo Baile' },
-  { text: 'Ar scáth a chéile a mhaireann na daoine — people live in one another\'s shelter.', source: 'Irish seanfhocal' },
-  { text: 'On my knees I beg you to turn away from the paths of violence and to return to the ways of peace.', source: 'Pope St John Paul II, Drogheda, 1979' },
-  { text: 'The parish is the Church living in the midst of the homes of her sons and daughters.', source: 'Pope St John Paul II, Christifideles Laici' },
-  { text: 'The joys and hopes, the griefs and anxieties of the people of this age, especially the poor, are the joys and hopes, the griefs and anxieties of the followers of Christ.', source: 'Second Vatican Council, Gaudium et Spes' },
-  { text: 'The liturgy is the summit toward which the activity of the Church is directed; it is also the font from which all her power flows.', source: 'Second Vatican Council, Sacrosanctum Concilium' },
-  { text: 'The parish is a community of communities, a sanctuary where the thirsty come to drink in the midst of their journey.', source: 'Pope Francis, Evangelii Gaudium' },
-  { text: 'The Church is called to be the house of the Father, with doors always wide open.', source: 'Pope Francis, Evangelii Gaudium' },
-  { text: 'The joy of the Gospel fills the hearts and lives of all who encounter Jesus.', source: 'Pope Francis, Evangelii Gaudium' },
-  { text: 'I prefer a Church which is bruised, hurting and dirty because it has been out on the streets, rather than a Church which is unhealthy from being confined.', source: 'Pope Francis, Evangelii Gaudium' },
-  { text: 'Being Christian is not the result of a lofty idea, but the encounter with a person, which gives life a new horizon and a decisive direction.', source: 'Pope Benedict XVI, Deus Caritas Est' },
-  { text: 'They devoted themselves to the apostles\' teaching and fellowship, to the breaking of bread and the prayers.', source: 'Acts 2:42' },
-  { text: 'Where two or three are gathered in my name, I am there among them.', source: 'Matthew 18:20' },
-  { text: 'I am the vine; you are the branches. Whoever remains in me, and I in him, will bear much fruit.', source: 'John 15:5' },
-]
-
-// Photos shown behind the quotes, cycling independently of the quotes.
-// To add a photo: put it in public/images/ and add its filename here.
-const quotePhotos = [
-  '/images/street-dancing.jpg',
-  '/images/altar-flowers.jpg',
-  '/images/first-communion.jpg',
-  '/images/outdoor-mass-evening.jpg',
-  '/images/wedding-selfie.jpg',
-  '/images/jubilee-altar.jpg',
-  '/images/confirmation.jpg',
-  '/images/parish-welcome.jpg',
-  '/images/clergy-with-bishop.jpg',
-  '/images/sacred-heart-sanctuary.jpg',
-  '/images/wedding-congregation.jpg',
-  '/images/jubilee-mass.jpg',
-  '/images/community.jpg',
-  '/images/insta-stbrigid.jpg',
-  '/images/insta-grotto.jpg',
-  '/images/insta-stboice.jpg',
-  '/images/insta-shine.jpg',
-  '/images/feast-fieldstown.jpg',
+  { text: '"I am the vine; you are the branches. Whoever remains in me, and I in him, will bear much fruit."', source: 'John 15:5', image: '/images/community.jpg' },
+  { text: '"Charity is patient, is kind... Charity never faileth."', source: '1 Corinthians 13:4,8', image: '/images/insta-stbrigid.jpg' },
+  { text: '"Let nothing disturb you, let nothing frighten you. All things pass away; God never changes."', source: 'St. Teresa of Ávila', image: '/images/insta-grotto.jpg' },
 ]
 
 export default function Home() {
@@ -83,7 +33,6 @@ export default function Home() {
   }, [])
 
   const quote = heroQuotes[quoteIndex]
-  const quotePhoto = quotePhotos[quoteIndex % quotePhotos.length]
 
   return (
     <div>
@@ -95,7 +44,7 @@ export default function Home() {
       }}>
         <Nav transparent />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(20,15,10,0.82) 0%, rgba(20,15,10,0.25) 55%, rgba(20,15,10,0.05) 100%)' }} />
-        <div style={{ position: 'relative', zIndex: 2, padding: '0 64px 60px', marginTop: 'auto', maxWidth: 960, display: 'flex', flexDirection: 'column', gap: 22 }}>
+        <div style={{ position: 'relative', zIndex: 2, padding: '0 64px 60px', marginTop: 'auto', maxWidth: 880, display: 'flex', flexDirection: 'column', gap: 22 }}>
           <h1 style={{ fontSize: 48, lineHeight: 1.1, color: '#fff', fontWeight: 800, margin: 0 }}>
             A parish centred on Christ,<br />ablaze with His love.
           </h1>
@@ -113,13 +62,11 @@ export default function Home() {
         <div style={{ width: '100%', maxWidth: 1180, background: '#fff', borderRadius: 20, boxShadow: '0 20px 40px rgba(25,23,20,0.14)', padding: '34px 44px', display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 32 }}>
           <div>
             <div style={{ fontSize: 12, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700, marginBottom: 8 }}>WEEKDAY MASSES</div>
-            <MassLine church="Immaculate Conception, Tenure (TEN)" times="Tue 9.30am, Fri 7pm" />
-            <MassLine church="Nativity of Our Lady, Fieldstown (F/T)" times="Wed 9.30am" />
+            <div style={{ fontSize: 15, lineHeight: 1.7 }}>Tenure (TEN) — Tue 9.30am, Fri 7pm<br />Fieldstown (F/T) — Wed 9.30am</div>
           </div>
           <div style={{ borderLeft: '1px solid var(--line)', borderRight: '1px solid var(--line)', padding: '0 32px' }}>
             <div style={{ fontSize: 12, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700, marginBottom: 8 }}>WEEKEND MASSES</div>
-            <MassLine church="Nativity of Our Lady, Fieldstown (F/T)" times="Sun 9.45am" />
-            <MassLine church="Immaculate Conception, Tenure (TEN)" times="Sun 11.30am" />
+            <div style={{ fontSize: 15, lineHeight: 1.7 }}>Fieldstown (F/T) — Sun 9.45am<br />Tenure (TEN) — Sun 11.30am</div>
           </div>
           <div>
             <div style={{ fontSize: 12, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700, marginBottom: 8 }}>CONFESSIONS &amp; ADORATION</div>
@@ -162,7 +109,7 @@ export default function Home() {
 
       <div style={{
         width: '100%', height: 420, marginTop: 60, position: 'relative',
-        backgroundImage: `url(${quotePhoto})`, backgroundSize: 'cover', backgroundPosition: 'center 20%',
+        backgroundImage: `url(${quote.image})`, backgroundSize: 'cover', backgroundPosition: 'center 20%',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         transition: 'background-image 0.6s ease',
       }}>
@@ -222,12 +169,3 @@ const placeholderNews = [
   { image_url: '/images/news-jubilee.jpg', title: 'Jubilee Celebration of Priestly Anniversaries', published_at: '2026-05-31' },
   { image_url: '/images/news-easter.jpg', title: 'Easter Message 2026', published_at: '2026-04-04' },
 ]
-
-function MassLine({ church, times }) {
-  return (
-    <div style={{ fontSize: 15, lineHeight: 1.5, marginBottom: 8 }}>
-      <div style={{ fontWeight: 600, fontSize: 14 }}>{church}</div>
-      <div style={{ color: 'var(--muted)' }}>{times}</div>
-    </div>
-  )
-}

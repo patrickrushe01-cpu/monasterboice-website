@@ -49,7 +49,7 @@ export default function Contact() {
             {status === 'error' && <div style={{ color: '#8B1E3F', fontSize: 14 }}>Something went wrong — please try again or call the office directly.</div>}
           </form>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 28, minWidth: 260 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, minWidth: 260 }}>
             <div style={{ fontSize: 13, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700 }}>CHURCHES IN THE PARISH</div>
             <ChurchBlock name="The Church of The Immaculate Conception, Tenure (TEN)" address="Tenure, Dunleer, Co. Louth, A92 D344" />
             <div style={{ height: 1, background: 'var(--line)' }} />
