@@ -39,7 +39,7 @@ export default function News() {
             <Link key={post.id} to={`/news`} className="photocard" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <img src={post.image_url} alt="" style={{ height: 190, width: '100%', objectFit: 'cover', borderRadius: 16 }} />
               <div style={{ fontSize: 13, color: 'var(--faint)' }}>
-                {new Date(post.published_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}
+                {new Date(post.published_at).toLocaleDateString('en-IE', { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' })}
               </div>
               <div className="photocard-title" style={{ fontSize: 18, fontWeight: 700 }}>{post.title}</div>
               <div style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.6 }}>{post.excerpt}</div>

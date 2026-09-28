@@ -8,13 +8,12 @@ export default function Bulletins() {
   const [bulletins, setBulletins] = useState([])
 
   useEffect(() => {
-    const fourWeeksAgo = new Date()
-    fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28)
+    // This week's bulletin plus the four before it; older ones drop off as new ones are added
     supabase
       .from('bulletins')
       .select('*')
-      .gte('issue_date', fourWeeksAgo.toISOString())
       .order('issue_date', { ascending: false })
+      .limit(5)
       .then(({ data }) => setBulletins(data || []))
   }, [])
 
@@ -40,7 +39,7 @@ export default function Bulletins() {
               <div>
                 <div style={{ fontSize: 13, color: 'var(--accent)', fontWeight: 700, letterSpacing: '0.06em' }}>THIS WEEK</div>
                 <div style={{ fontSize: 22, color: '#fff', fontWeight: 700 }}>
-                  {new Date(latest.issue_date).toLocaleDateString('en-IE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                  {new Date(latest.issue_date).toLocaleDateString('en-IE', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                 </div>
                 <div style={{ fontSize: 14, color: '#B5AC9C' }}>Both churches · PDF</div>
               </div>
@@ -62,7 +61,7 @@ export default function Bulletins() {
                   <PdfIcon small />
                   <div>
                     <div style={{ fontSize: 16, fontWeight: 700 }}>
-                      {new Date(b.issue_date).toLocaleDateString('en-IE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                      {new Date(b.issue_date).toLocaleDateString('en-IE', { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                     </div>
                   </div>
                 </div>
@@ -76,7 +75,7 @@ export default function Bulletins() {
       <div style={{ padding: '24px 64px 80px', display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: 1100, background: 'var(--cream)', borderRadius: 14, padding: '24px 28px', display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.6 }}>
-            Bulletins older than four weeks are removed from this page automatically. Looking for an older one? <a href="/contact" className="textlink">Contact the parish office</a> and we'll dig it out.
+            Only this week's bulletin and the four before it are shown here. Looking for an older one? <a href="/contact" className="textlink">Contact the parish office</a> and we'll dig it out.
           </div>
         </div>
       </div>

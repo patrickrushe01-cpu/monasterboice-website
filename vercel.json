@@ -49,6 +49,16 @@
       "source": "/welcome/",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/webcam-for-church-of-the-immaculate-conception-tenure",
+      "destination": "/webcam",
+      "permanent": true
+    },
+    {
+      "source": "/webcam-for-church-of-the-immaculate-conception-tenure/",
+      "destination": "/webcam",
+      "permanent": true
     }
   ],
   "rewrites": [

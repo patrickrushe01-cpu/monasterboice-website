@@ -224,7 +224,7 @@ function Section({ id, defTag, defTitle, defText, defLink, linkTo, defImage, rev
 
 function formatDate(d) {
   if (!d) return ''
-  return new Date(d).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })
+  return new Date(d).toLocaleDateString('en-IE', { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' })
 }
 
 const placeholderNews = [

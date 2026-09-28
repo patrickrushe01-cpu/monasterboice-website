@@ -5,6 +5,7 @@ const links = [
   { to: '/news', label: 'News' },
   { to: '/bulletins', label: 'Bulletins' },
   { to: '/sacraments', label: 'Sacraments' },
+  { to: '/webcam', label: 'Webcam' },
   { to: '/contact', label: 'Contact' },
 ]
 

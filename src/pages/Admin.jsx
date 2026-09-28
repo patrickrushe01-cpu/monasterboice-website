@@ -66,7 +66,7 @@ function NewsSection() {
             <div key={p.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', border: '1px solid var(--line)', borderRadius: 12 }}>
               <div>
                 <div style={{ fontWeight: 700, fontSize: 15 }}>{p.title}</div>
-                <div style={{ fontSize: 13, color: 'var(--faint)' }}>{new Date(p.published_at).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                <div style={{ fontSize: 13, color: 'var(--faint)' }}>{new Date(p.published_at).toLocaleDateString('en-IE', { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' })}</div>
               </div>
               <button onClick={() => handleDelete(p.id)} style={{ background: 'none', border: 'none', color: '#8B1E3F', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>Delete</button>
             </div>
@@ -146,7 +146,7 @@ function BulletinSection() {
           <div style={{ fontSize: 13, letterSpacing: '0.06em', color: 'var(--faint)', fontWeight: 700 }}>UPLOADED BULLETINS</div>
           {bulletins.map(b => (
             <div key={b.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', border: '1px solid var(--line)', borderRadius: 12 }}>
-              <div style={{ fontWeight: 700, fontSize: 15 }}>{new Date(b.issue_date).toLocaleDateString('en-IE', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+              <div style={{ fontWeight: 700, fontSize: 15 }}>{new Date(b.issue_date).toLocaleDateString('en-IE', { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' })}</div>
               <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
                 <a href={b.file_url} target="_blank" rel="noreferrer" className="textlink" style={{ fontSize: 13 }}>View</a>
                 <button onClick={() => handleDelete(b.id)} style={{ background: 'none', border: 'none', color: '#8B1E3F', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>Delete</button>
@@ -193,7 +193,7 @@ function BulletinForm({ onUploaded }) {
       <button type="submit" className="btn" style={{ background: 'var(--accent)' }} disabled={status === 'saving'}>
         {status === 'saving' ? 'Uploading…' : 'Upload Bulletin'}
       </button>
-      <p style={{ fontSize: 12, color: 'var(--faint)', margin: 0 }}>Bulletins older than 4 weeks stop appearing on the public site automatically — no need to remove them yourself.</p>
+      <p style={{ fontSize: 12, color: 'var(--faint)', margin: 0 }}>The public site shows this week's bulletin plus the four before it. Older ones drop off automatically as you upload new ones — no need to remove them yourself.</p>
       {status === 'saved' && <div style={{ color: '#2F5233', fontSize: 13 }}>Uploaded.</div>}
       {status === 'error' && <div style={{ color: '#8B1E3F', fontSize: 13 }}>Something went wrong — try again.</div>}
     </form>

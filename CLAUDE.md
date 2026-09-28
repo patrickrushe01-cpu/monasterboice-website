@@ -45,6 +45,11 @@ at WordPress and will be switched over later, once content is finalized.
 - Parish accounts PDFs live in the `parish_accounts` table (year + file_url), uploaded from the Admin page; latest year is featured.
 - `vercel.json` redirects old WordPress addresses (/support-the-parish, /contact-us, /parish-bulletin, /latest-news, /welcome).
 
+## Webcam (`/webcam`) and bulletins
+- Live streaming is hosted by Church Services TV (https://www.churchservices.tv/monasterboice); /webcam links to it (editable via LinkButton).
+- Bulletins page shows this week's bulletin plus the four before it (five most recent by `issue_date`), not a date window.
+- Date-only values (issue_date, published_at) must be displayed with `timeZone: 'UTC'`, otherwise viewers in the Americas see the wrong day.
+
 ## Deployment workflow
 - GitHub repo: patrickrushe01-cpu/monasterboice-website, connected to Vercel for auto-deploy on push to `main`
 - Standard flow: edit files → `npm run build` to confirm no errors → `git add . && git commit -m "..." && git push`
