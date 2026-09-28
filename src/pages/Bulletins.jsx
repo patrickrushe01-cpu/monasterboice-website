@@ -72,6 +72,8 @@ export default function Bulletins() {
         </div>
       )}
 
+      <SubscribeBox />
+
       <div style={{ padding: '24px 64px 80px', display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: 1100, background: 'var(--cream)', borderRadius: 14, padding: '24px 28px', display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.6 }}>
@@ -101,5 +103,48 @@ function PdfIcon({ small }) {
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
       <path d="M14 2v6h6"></path>
     </svg>
+  )
+}
+
+function SubscribeBox() {
+  const [email, setEmail] = useState('')
+  const [trap, setTrap] = useState('') // hidden field: real people never fill it in, bots do
+  const [state, setState] = useState('idle') // idle | sending | done | error
+
+  async function submit(e) {
+    e.preventDefault()
+    if (trap) { setState('done'); return }
+    setState('sending')
+    const { error } = await supabase.rpc('subscribe_to_bulletin', { p_email: email })
+    setState(error ? 'error' : 'done')
+  }
+
+  return (
+    <div style={{ padding: '24px 64px 8px', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ width: '100%', maxWidth: 1100, background: 'var(--cream)', borderRadius: 18, padding: '32px 36px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Editable as="h3" id="bulletins.sub.title" def="Get the bulletin by email" multiline={false} style={{ fontSize: 22, fontWeight: 800, margin: 0 }} />
+        <Editable as="p" id="bulletins.sub.text" def="Subscribe to receive the Parish Bulletin by email each week." style={{ fontSize: 15, color: 'var(--muted)', margin: 0 }} />
+        {state === 'done' ? (
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#2F5233' }}>Thank you — you're on the list.</div>
+        ) : (
+          <form onSubmit={submit} style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+            <input
+              type="email" required placeholder="Your email address" aria-label="Your email address"
+              value={email} onChange={e => setEmail(e.target.value)}
+              style={{ flex: 1, minWidth: 240, maxWidth: 420 }}
+            />
+            <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" value={trap} onChange={e => setTrap(e.target.value)}
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+            <button type="submit" className="btn" style={{ background: 'var(--accent)' }} disabled={state === 'sending'}>
+              {state === 'sending' ? 'Subscribing…' : 'Subscribe'}
+            </button>
+          </form>
+        )}
+        {state === 'error' && <div style={{ fontSize: 13, color: '#8B1E3F' }}>That didn't work — please check the address and try again.</div>}
+        <Editable as="p" id="bulletins.sub.note"
+          def="Your email address is used only to send you the parish bulletin. You can ask the Parish Office to remove you from the list at any time."
+          style={{ fontSize: 12, color: 'var(--faint)', margin: 0, lineHeight: 1.6 }} />
+      </div>
+    </div>
   )
 }

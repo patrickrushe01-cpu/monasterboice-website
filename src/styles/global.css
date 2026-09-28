@@ -166,3 +166,21 @@ input, textarea {
 }
 .edit-chip:hover { background: var(--accent); color: #fff; }
 .edit-chip-note { font-size: 12px; color: var(--faint); }
+
+/* ---------- Story pages ---------- */
+.article { font-size: 17px; line-height: 1.8; color: var(--ink); overflow-wrap: anywhere; }
+.article > *:first-child { margin-top: 0; }
+.article p { margin: 0 0 1.1em; }
+.article h1, .article h2, .article h3, .article h4 { font-weight: 800; line-height: 1.25; margin: 1.6em 0 0.6em; }
+.article h1 { font-size: 28px; } .article h2 { font-size: 24px; } .article h3 { font-size: 20px; } .article h4 { font-size: 17px; }
+.article a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.article ul, .article ol { margin: 0 0 1.1em; padding-left: 1.4em; }
+.article li { margin: 0.3em 0; }
+.article img { max-width: 100%; height: auto; border-radius: 14px; margin: 0.6em 0 1.2em; display: block; }
+.article blockquote { margin: 1.4em 0; padding: 14px 22px; background: var(--cream); border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0; }
+.article blockquote p:last-child { margin-bottom: 0; }
+.article hr { border: none; border-top: 1px solid var(--line); margin: 2em 0; }
+.article-table { overflow-x: auto; margin: 0 0 1.4em; }
+.article table { border-collapse: collapse; width: 100%; font-size: 15px; }
+.article th, .article td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+.article th { background: var(--cream); font-weight: 800; }

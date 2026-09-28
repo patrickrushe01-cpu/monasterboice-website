@@ -77,3 +77,45 @@ create policy "Public read parish_accounts" on public.parish_accounts for select
 create policy "Admins insert parish_accounts" on public.parish_accounts for insert to authenticated with check (true);
 create policy "Admins update parish_accounts" on public.parish_accounts for update to authenticated using (true) with check (true);
 create policy "Admins delete parish_accounts" on public.parish_accounts for delete to authenticated using (true);
+
+-- ---------- News stories (full text) ----------
+alter table public.news_posts
+  add column if not exists slug text,
+  add column if not exists body text,          -- story text as simple Markdown
+  add column if not exists category text,
+  add column if not exists source_id bigint;   -- WordPress post ID (used by the one-off import)
+create unique index if not exists news_posts_slug_key on public.news_posts (slug);
+create unique index if not exists news_posts_source_id_key on public.news_posts (source_id);
+create index if not exists news_posts_published_at_idx on public.news_posts (published_at desc);
+
+-- ---------- Weekly bulletin email sign-ups ----------
+create table if not exists public.bulletin_subscribers (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  source text not null default 'website',
+  created_at timestamptz not null default now(),
+  constraint bulletin_subscribers_email_ok check (
+    email = lower(email) and length(email) <= 254 and email ~ '^[^@\s]+@[^@\s]+\.[^@\s]+$'
+  )
+);
+alter table public.bulletin_subscribers enable row level security;
+create policy "Admins read subscribers" on public.bulletin_subscribers for select to authenticated using (true);
+create policy "Admins update subscribers" on public.bulletin_subscribers for update to authenticated using (true) with check (true);
+create policy "Admins delete subscribers" on public.bulletin_subscribers for delete to authenticated using (true);
+
+-- The public signs up ONLY through this function (no direct table access, so nobody can read the list
+-- or tell whether an address is already subscribed).
+create or replace function public.subscribe_to_bulletin(p_email text)
+returns void language plpgsql security definer set search_path = '' as $$
+declare e text := lower(trim(p_email));
+begin
+  if e is null or length(e) > 254 or e !~ '^[^@\s]+@[^@\s]+\.[^@\s]+$' then
+    raise exception 'invalid email' using errcode = '22023';
+  end if;
+  if (select count(*) from public.bulletin_subscribers where created_at > now() - interval '1 minute') > 60 then
+    raise exception 'too many requests' using errcode = '53400';
+  end if;
+  insert into public.bulletin_subscribers (email) values (e) on conflict (email) do nothing;
+end; $$;
+revoke all on function public.subscribe_to_bulletin(text) from public;
+grant execute on function public.subscribe_to_bulletin(text) to anon, authenticated;

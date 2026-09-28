@@ -29,7 +29,7 @@ export function safeUrl(v) {
 }
 
 // Shrink big phone photos before upload so pages stay fast (max 2000px wide, JPEG)
-async function resizeImage(file, maxW = 2000) {
+export async function resizeImage(file, maxW = 2000) {
   const url = URL.createObjectURL(file)
   try {
     const img = await new Promise((resolve, reject) => {
@@ -282,16 +282,14 @@ export function LinkButton({ id, def = '', className = 'btn', style, children })
 
 /* A list kept as plain lines of text (one item per line). Visitors get `render(lines)`;
    editors get a simple typeable box. */
-export function EditableLines({ id, def, render }) {
+export function EditableLines({ id, def, render, hint = 'One per line. For people, write “Name — Role”. Press Enter for a new line.' }) {
   const c = useContent()
   const value = c.get(id, def)
   if (!c.editing) return render(value.split('\n').map(l => l.trim()).filter(Boolean))
   return (
     <div>
       <EditText as="div" value={value} onCommit={t => c.setDraft(id, t)} style={{ lineHeight: 1.9, fontSize: 15 }} />
-      <div style={{ fontSize: 12, color: 'var(--faint)', marginTop: 8 }}>
-        One per line. For people, write “Name — Role”. Press Enter for a new line.
-      </div>
+      <div style={{ fontSize: 12, color: 'var(--faint)', marginTop: 8 }}>{hint}</div>
     </div>
   )
 }

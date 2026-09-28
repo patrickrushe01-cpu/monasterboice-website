@@ -4,6 +4,7 @@ import Nav from '../components/Nav.jsx'
 import Footer from '../components/Footer.jsx'
 import { supabase } from '../lib/supabaseClient.js'
 import { ChangePhoto, Editable, EditableImg, EditText, SmartLink, useContent } from '../lib/content.jsx'
+import { postPath } from '../lib/news.js'
 
 // Starting set of rotating quotes. Once you edit them on the page, your saved version replaces these.
 const defaultQuotes = [
@@ -20,8 +21,9 @@ export default function Home() {
   useEffect(() => {
     supabase
       .from('news_posts')
-      .select('*')
+      .select('id,title,image_url,published_at,slug')
       .order('published_at', { ascending: false })
+      .order('created_at', { ascending: false })
       .limit(3)
       .then(({ data }) => setNews(data || []))
   }, [])
@@ -179,8 +181,12 @@ export default function Home() {
         </div>
         <div style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 28 }}>
           {(news.length ? news : placeholderNews).map((n, i) => (
-            <Link key={n.id || i} to="/news" className="photocard" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <img src={n.image_url || placeholderNews[i]?.image_url} alt="" style={{ height: 190, width: '100%', objectFit: 'cover', borderRadius: 16 }} />
+            <Link key={n.id || i} to={postPath(n)} className="photocard" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {n.image_url ? (
+                <img src={n.image_url} alt="" style={{ height: 190, width: '100%', objectFit: 'cover', borderRadius: 16 }} />
+              ) : (
+                <div style={{ height: 190, width: '100%', borderRadius: 16, background: 'var(--cream)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', fontSize: 13, letterSpacing: '0.1em', fontWeight: 700 }}>PARISH NEWS</div>
+              )}
               <div style={{ fontSize: 13, color: 'var(--faint)' }}>{formatDate(n.published_at)}</div>
               <div className="photocard-title" style={{ fontSize: 18, fontWeight: 700 }}>{n.title}</div>
             </Link>

@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import News from './pages/News.jsx'
@@ -10,6 +11,8 @@ import ResetPassword from './pages/ResetPassword.jsx'
 import SupportUs from './pages/SupportUs.jsx'
 import Webcam from './pages/Webcam.jsx'
 import NotFound from './pages/NotFound.jsx'
+const NewsArticle = lazy(() => import('./pages/NewsArticle.jsx'))
+import Resources from './pages/Resources.jsx'
 import { ContentProvider, EditBar } from './lib/content.jsx'
 
 export default function App() {
@@ -18,6 +21,8 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/news" element={<News />} />
+      <Route path="/news/:slug" element={<Suspense fallback={<div style={{ padding: 64 }}>Loading…</div>}><NewsArticle /></Suspense>} />
+      <Route path="/resources" element={<Resources />} />
       <Route path="/bulletins" element={<Bulletins />} />
       <Route path="/sacraments" element={<Sacraments />} />
       <Route path="/contact" element={<Contact />} />

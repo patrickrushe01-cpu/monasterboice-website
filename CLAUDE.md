@@ -50,8 +50,21 @@ at WordPress and will be switched over later, once content is finalized.
 - Bulletins page shows this week's bulletin plus the four before it (five most recent by `issue_date`), not a date window.
 - Date-only values (issue_date, published_at) must be displayed with `timeZone: 'UTC'`, otherwise viewers in the Americas see the wrong day.
 
+## News stories, resources and email sign-up
+- All 98 old WordPress stories (2019–2026) were imported into `news_posts` with full text (`body`, simple Markdown), a `slug`,
+  a `category`, and their photos/PDFs copied into the `parish-media` bucket (`news/<wp-post-id>/…`). Each story lives at `/news/:slug`
+  (lazy-loaded page, `src/pages/NewsArticle.jsx`, rendered by `src/components/ArticleBody.jsx` using react-markdown — never raw HTML).
+- Old WordPress permalinks (`/YYYY/MM/DD/slug`) redirect to `/news/slug` via `vercel.json`. `/wp-content/*` (old media links) redirects to
+  the original WordPress.com site — so keep that WordPress.com site alive (don't delete it) for old media links to work.
+- Admin can add, edit (with preview) and delete stories. Two 2021 videos were too large (>15MB) to copy and still point at the old WordPress site.
+- `/resources` is an editable list (`Name | https://address | Description`, one per line) using `<EditableLines>`.
+- The bulletin email sign-up calls the `subscribe_to_bulletin` database function (the table is not readable by the public). Admin lists,
+  exports (CSV) and bulk-adds subscribers. Sending the weekly email is done outside the site (e.g. Mailchimp) using the exported list.
+- Date-only values are shown in UTC so the day never shifts for viewers abroad.
+
 ## Deployment workflow
 - GitHub repo: patrickrushe01-cpu/monasterboice-website, connected to Vercel for auto-deploy on push to `main`
+- After pulling changes that touch package.json run `npm install`.
 - Standard flow: edit files → `npm run build` to confirm no errors → `git add . && git commit -m "..." && git push`
 - Vercel auto-redeploys on push; check the Deployments tab at vercel.com to confirm
 
