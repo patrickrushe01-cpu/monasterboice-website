@@ -22,10 +22,10 @@ const councilDefault = [
   'Fr Paddy Rushe — Secretary',
 ].join('\n')
 
-const wrap = { padding: '56px 64px 8px', display: 'flex', justifyContent: 'center' }
+const wrap = { padding: 'clamp(36px, 8vw, 56px) var(--pad) 8px', display: 'flex', justifyContent: 'center' }
 const inner = { width: '100%', maxWidth: 1100 }
 const card = { background: 'var(--cream)', borderRadius: 18, padding: 28, display: 'flex', flexDirection: 'column', gap: 12 }
-const h2 = { fontSize: 30, fontWeight: 800, margin: 0 }
+const h2 = { fontSize: 'clamp(24px, 6vw, 30px)', fontWeight: 800, margin: 0 }
 const lead = { fontSize: 16, color: 'var(--muted)', lineHeight: 1.7, margin: 0, maxWidth: 760 }
 const small = { fontSize: 13, letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 700 }
 
@@ -44,9 +44,9 @@ export default function SupportUs() {
     <div>
       <Nav />
 
-      <div style={{ background: 'var(--cream)', padding: '56px 64px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div style={{ background: 'var(--cream)', padding: 'clamp(36px, 8vw, 56px) var(--pad)', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <div style={{ fontSize: 13, color: 'var(--faint)' }}>Home / Support Us</div>
-        <Editable as="h1" id="support.title" def="Support Your Parish" multiline={false} style={{ fontSize: 40, fontWeight: 800, margin: 0 }} />
+        <Editable as="h1" id="support.title" def="Support Your Parish" multiline={false} style={{ fontSize: 'clamp(30px, 8vw, 40px)', fontWeight: 800, margin: 0 }} />
         <Editable as="p" id="support.intro"
           def="Our two churches, the Parochial House and the whole life of the parish are supported directly by the weekly contributions and regular donations of parishioners. Thank you for your generosity."
           style={{ ...lead, maxWidth: 680 }} />
@@ -56,7 +56,7 @@ export default function SupportUs() {
         </div>
       </div>
 
-      <div style={{ padding: '22px 64px', display: 'flex', gap: 28, flexWrap: 'wrap', borderBottom: '1px solid var(--line)' }}>
+      <div style={{ padding: '22px var(--pad)', display: 'flex', gap: 28, flexWrap: 'wrap', borderBottom: '1px solid var(--line)' }}>
         {[['#ways', 'Ways to give'], ['#tax', 'Tax relief'], ['#accounts', 'Parish accounts'], ['#fees', 'Fees & charges'], ['#council', 'Finance Council'], ['#enquiries', 'Enquiries']].map(([href, label]) => (
           <a key={href} href={href} style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)' }}>{label}</a>
         ))}
@@ -69,7 +69,7 @@ export default function SupportUs() {
             <Editable as="div" id="support.ways.tag" def="WAYS TO GIVE" multiline={false} style={small} />
             <Editable as="h2" id="support.ways.title" def="Giving to your parish" multiline={false} style={h2} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 22 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 22 }}>
             <div style={card}>
               <Editable as="h3" id="support.env.title" def="Parish envelopes" multiline={false} style={{ fontSize: 20, fontWeight: 800, margin: 0 }} />
               <Editable as="p" id="support.env.text"
@@ -108,7 +108,7 @@ export default function SupportUs() {
               def="Under the Charitable Donation Scheme, if you pay Irish income tax (PAYE or self-assessed) and your donations to the parish total €250 or more in a calendar year, the parish can claim back the tax you have already paid on them from Revenue. That adds roughly 31% to your gift — a €250 donation is worth about €362 to the parish — and it costs you nothing extra."
               style={lead} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 22 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 22 }}>
             {[
               ['1', 'Give in a way that is recorded', 'Parish envelopes, online giving, bank transfer or standing order all qualify. Loose cash in the collection cannot be claimed.'],
               ['2', 'Sign a CHY3 form', 'The CHY3 “enduring certificate” lets the parish claim on your donations for five years. You will need your PPS number. It does not oblige you to keep giving.'],
@@ -158,7 +158,7 @@ export default function SupportUs() {
           {earlier.length > 0 && (
             <div>
               <div style={{ fontSize: 13, letterSpacing: '0.06em', color: 'var(--faint)', fontWeight: 700, marginBottom: 10 }}>EARLIER YEARS</div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(190px, 100%), 1fr))', gap: 12 }}>
                 {earlier.map(a => (
                   <a key={a.id} href={a.file_url} target="_blank" rel="noreferrer"
                     style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 18px', border: '1px solid var(--line)', borderRadius: 12, fontWeight: 700, fontSize: 15 }}>
@@ -182,7 +182,7 @@ export default function SupportUs() {
               def="There is no charge for a sacrament itself. The parish does, however, ask for the following, which help meet the real costs of running and caring for our churches."
               style={lead} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 22 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 22 }}>
             {[
               ['church', 'Use of the church for weddings', 'A charge applies for the use of the church for a wedding. It helps cover heating, lighting, insurance, cleaning and general upkeep.'],
               ['sacristan', 'Sacristan', 'The sacristan looks after the church and assists at ceremonies. A sacristan’s fee applies and is separate from the charge for the use of the church.'],
@@ -209,7 +209,7 @@ export default function SupportUs() {
               style={lead} />
           </div>
           <EditableLines id="support.council.list" def={councilDefault} render={lines => (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 14 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(230px, 100%), 1fr))', gap: 14 }}>
               {lines.map((line, i) => {
                 const { name, role } = parseMember(line)
                 return (
@@ -226,7 +226,7 @@ export default function SupportUs() {
 
       {/* ENQUIRIES */}
       <div id="enquiries" style={{ ...wrap, paddingTop: 72, paddingBottom: 72 }}>
-        <div style={{ ...inner, background: 'var(--ink)', borderRadius: 20, padding: '40px 48px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div className="enq-box" style={{ ...inner, background: 'var(--ink)', borderRadius: 20, padding: '40px 48px', display: 'flex', flexDirection: 'column', gap: 14 }}>
           <Editable as="h2" id="support.enq.title" def="Questions about parish finances?" multiline={false} style={{ fontSize: 26, fontWeight: 800, margin: 0, color: '#fff' }} />
           <Editable as="p" id="support.enq.text" def="All finance enquiries go to the Parish Office."
             style={{ fontSize: 16, color: '#E7DFD2', margin: 0 }} />

@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div>
       <Nav />
-      <div style={{ padding: '120px 64px', textAlign: 'center' }}>
+      <div style={{ padding: 'clamp(64px, 14vw, 120px) var(--pad)', textAlign: 'center' }}>
         <h1 style={{ fontSize: 32, fontWeight: 800 }}>Page not found</h1>
         <p style={{ color: 'var(--muted)' }}>That page doesn't exist — try the homepage instead.</p>
         <Link to="/" className="textlink">Back to Home →</Link>

@@ -35,9 +35,9 @@ export default function News() {
   return (
     <div>
       <Nav />
-      <div style={{ background: 'var(--cream)', padding: '56px 64px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ background: 'var(--cream)', padding: 'clamp(36px, 8vw, 56px) var(--pad)', display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ fontSize: 13, color: 'var(--faint)' }}>Home / News</div>
-        <Editable as="h1" id="news.title" def="Parish News" multiline={false} style={{ fontSize: 40, fontWeight: 800, margin: 0 }} />
+        <Editable as="h1" id="news.title" def="Parish News" multiline={false} style={{ fontSize: 'clamp(30px, 8vw, 40px)', fontWeight: 800, margin: 0 }} />
         <Editable as="p" id="news.intro" def="Updates, events, and notices from Tenure and Fieldstown." style={{ fontSize: 16, color: 'var(--muted)', maxWidth: 560, margin: 0 }} />
         <input
           type="search"
@@ -49,7 +49,7 @@ export default function News() {
         />
       </div>
 
-      <div style={{ padding: '32px 64px 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40 }}>
+      <div style={{ padding: '32px var(--pad) clamp(48px, 10vw, 80px)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40 }}>
         {posts === null && <div style={{ color: 'var(--faint)' }}>Loading…</div>}
         {posts && filtered.length === 0 && (
           <div style={{ color: 'var(--faint)', padding: '40px 0' }}>
@@ -57,7 +57,7 @@ export default function News() {
           </div>
         )}
 
-        <div style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 32 }}>
+        <div style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 32 }}>
           {visible.map(post => (
             <Link key={post.id} to={postPath(post)} className="photocard" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {post.image_url ? (

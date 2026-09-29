@@ -22,15 +22,15 @@ export default function Bulletins() {
   return (
     <div>
       <Nav />
-      <div style={{ background: 'var(--cream)', padding: '56px 64px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ background: 'var(--cream)', padding: 'clamp(36px, 8vw, 56px) var(--pad)', display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ fontSize: 13, color: 'var(--faint)' }}>Home / Bulletins</div>
-        <Editable as="h1" id="bulletins.title" def="Parish Bulletins" multiline={false} style={{ fontSize: 40, fontWeight: 800, margin: 0 }} />
+        <Editable as="h1" id="bulletins.title" def="Parish Bulletins" multiline={false} style={{ fontSize: 'clamp(30px, 8vw, 40px)', fontWeight: 800, margin: 0 }} />
         <Editable as="p" id="bulletins.intro" def="This week's bulletin, plus the last four weeks for anyone catching up. Older bulletins are archived by the parish office on request."
           style={{ fontSize: 16, color: 'var(--muted)', maxWidth: 620, margin: 0 }} />
       </div>
 
       {latest ? (
-        <div style={{ padding: '48px 64px 24px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ padding: '48px var(--pad) 24px', display: 'flex', justifyContent: 'center' }}>
           <div style={{ width: '100%', maxWidth: 1100, background: 'var(--ink)', borderRadius: 20, padding: '40px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
               <div style={{ width: 64, height: 64, borderRadius: 14, background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -52,7 +52,7 @@ export default function Bulletins() {
       )}
 
       {older.length > 0 && (
-        <div style={{ padding: '24px 64px 16px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ padding: '24px var(--pad) 16px', display: 'flex', justifyContent: 'center' }}>
           <div style={{ width: '100%', maxWidth: 1100, display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ fontSize: 13, letterSpacing: '0.08em', color: 'var(--faint)', fontWeight: 700, padding: '0 8px' }}>PREVIOUS WEEKS</div>
             {older.map(b => (
@@ -65,7 +65,7 @@ export default function Bulletins() {
                     </div>
                   </div>
                 </div>
-                <a href={b.file_url} target="_blank" rel="noreferrer" className="textlink" style={{ fontSize: 14 }}>Download →</a>
+                <a href={b.file_url} target="_blank" rel="noreferrer" className="textlink" style={{ fontSize: 14, whiteSpace: 'nowrap' }}>Download →</a>
               </div>
             ))}
           </div>
@@ -74,7 +74,7 @@ export default function Bulletins() {
 
       <SubscribeBox />
 
-      <div style={{ padding: '24px 64px 80px', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ padding: '24px var(--pad) clamp(48px, 10vw, 80px)', display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: 1100, background: 'var(--cream)', borderRadius: 14, padding: '24px 28px', display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.6 }}>
             Only this week's bulletin and the four before it are shown here. Looking for an older one? <a href="/contact" className="textlink">Contact the parish office</a> and we'll dig it out.
@@ -88,7 +88,7 @@ export default function Bulletins() {
 
 function EmptyNotice() {
   return (
-    <div style={{ padding: '24px 64px', display: 'flex', justifyContent: 'center' }}>
+    <div style={{ padding: '24px var(--pad)', display: 'flex', justifyContent: 'center' }}>
       <div style={{ width: '100%', maxWidth: 1100, textAlign: 'center', padding: '40px', color: 'var(--faint)' }}>
         No bulletin uploaded yet for this week — check back soon, or contact the office.
       </div>
@@ -120,7 +120,7 @@ function SubscribeBox() {
   }
 
   return (
-    <div style={{ padding: '24px 64px 8px', display: 'flex', justifyContent: 'center' }}>
+    <div style={{ padding: '24px var(--pad) 8px', display: 'flex', justifyContent: 'center' }}>
       <div style={{ width: '100%', maxWidth: 1100, background: 'var(--cream)', borderRadius: 18, padding: '32px 36px', display: 'flex', flexDirection: 'column', gap: 12 }}>
         <Editable as="h3" id="bulletins.sub.title" def="Get the bulletin by email" multiline={false} style={{ fontSize: 22, fontWeight: 800, margin: 0 }} />
         <Editable as="p" id="bulletins.sub.text" def="Subscribe to receive the Parish Bulletin by email each week." style={{ fontSize: 15, color: 'var(--muted)', margin: 0 }} />
@@ -131,7 +131,7 @@ function SubscribeBox() {
             <input
               type="email" required placeholder="Your email address" aria-label="Your email address"
               value={email} onChange={e => setEmail(e.target.value)}
-              style={{ flex: 1, minWidth: 240, maxWidth: 420 }}
+              style={{ flex: 1, minWidth: 'min(240px, 100%)', maxWidth: 420 }}
             />
             <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" value={trap} onChange={e => setTrap(e.target.value)}
               style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />

@@ -62,6 +62,15 @@ at WordPress and will be switched over later, once content is finalized.
   exports (CSV) and bulk-adds subscribers. Sending the weekly email is done outside the site (e.g. Mailchimp) using the exported list.
 - Date-only values are shown in UTC so the day never shifts for viewers abroad.
 
+## Phone / responsive layout
+- `--pad` (CSS var) is the shared side margin (64px desktop, shrinking on smaller screens) — used instead of hard-coded 64px everywhere.
+- Under 1100px the top menu collapses into a "Menu" button (`.site-burger`) opening a full-width panel (`Nav.jsx`); above that it's the normal inline links.
+- Layout classes that change at breakpoints: `.split` (photo+text sections stack), `.mass-grid`/`.mass-mid` (Mass times card), `.stats` (the four figures, 2x2 on phones),
+  `.grid-3`/`.grid-2`/`.grid-2-sm`, `.quote-band`, `.enq-box`. Add a class rather than inline breakpoint logic when a new section needs to reflow.
+- Home page hero: `hero-both-churches.jpg` (desktop, landscape) vs `hero-both-churches-mobile.jpg` (phones, Tenure over Fieldstown, portrait) —
+  swapped via `useMediaQuery('(max-width: 700px)')` in `src/lib/useMediaQuery.js`. A photo chosen in Edit mode overrides both.
+- Checked with a headless-browser script (not checked in) at 320/360/390/768/1024/1440px on every public page: no horizontal overflow anywhere.
+
 ## Deployment workflow
 - GitHub repo: patrickrushe01-cpu/monasterboice-website, connected to Vercel for auto-deploy on push to `main`
 - After pulling changes that touch package.json run `npm install`.

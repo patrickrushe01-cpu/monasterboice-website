@@ -5,16 +5,16 @@ import { Editable, EditableImg, LinkButton } from '../lib/content.jsx'
 // The parish webcam is provided by Church Services TV
 const WEBCAM_URL = 'https://www.churchservices.tv/monasterboice'
 
-const card = { flex: 1, minWidth: 300, display: 'flex', flexDirection: 'column', gap: 14 }
+const card = { flex: 1, minWidth: 'min(300px, 100%)', display: 'flex', flexDirection: 'column', gap: 14 }
 
 export default function Webcam() {
   return (
     <div>
       <Nav />
 
-      <div style={{ background: 'var(--cream)', padding: '56px 64px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div style={{ background: 'var(--cream)', padding: 'clamp(36px, 8vw, 56px) var(--pad)', display: 'flex', flexDirection: 'column', gap: 14 }}>
         <div style={{ fontSize: 13, color: 'var(--faint)' }}>Home / Webcam</div>
-        <Editable as="h1" id="webcam.title" def="Watch Mass Live" multiline={false} style={{ fontSize: 40, fontWeight: 800, margin: 0 }} />
+        <Editable as="h1" id="webcam.title" def="Watch Mass Live" multiline={false} style={{ fontSize: 'clamp(30px, 8vw, 40px)', fontWeight: 800, margin: 0 }} />
         <Editable as="p" id="webcam.intro"
           def="Masses and other liturgies at our churches are broadcast live on the parish webcam, so that anyone who cannot be with us — at home, in hospital, or far away — can still join in prayer."
           style={{ fontSize: 16, color: 'var(--muted)', lineHeight: 1.7, margin: 0, maxWidth: 680 }} />
@@ -25,7 +25,7 @@ export default function Webcam() {
         </div>
       </div>
 
-      <div style={{ padding: '64px 64px 24px', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ padding: 'clamp(40px, 9vw, 64px) var(--pad) 24px', display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: 1100, display: 'flex', gap: 40, flexWrap: 'wrap' }}>
           <div style={card}>
             <EditableImg id="webcam.tenure.image" def="/images/tenure-church.jpg" style={{ height: 300, objectFit: 'cover', borderRadius: 18 }} />
@@ -44,7 +44,7 @@ export default function Webcam() {
         </div>
       </div>
 
-      <div style={{ padding: '24px 64px 72px', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ padding: '24px var(--pad) clamp(44px, 9vw, 72px)', display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: 1100 }}>
           <Editable as="p" id="webcam.note"
             def="The webcam service is provided by Church Services TV. If you have any difficulty watching, please contact the Parish Office."

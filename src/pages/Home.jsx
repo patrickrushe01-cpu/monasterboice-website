@@ -5,6 +5,7 @@ import Footer from '../components/Footer.jsx'
 import { supabase } from '../lib/supabaseClient.js'
 import { ChangePhoto, Editable, EditableImg, EditText, SmartLink, useContent } from '../lib/content.jsx'
 import { postPath } from '../lib/news.js'
+import { useMediaQuery } from '../lib/useMediaQuery.js'
 
 // Starting set of rotating quotes. Once you edit them on the page, your saved version replaces these.
 const defaultQuotes = [
@@ -58,22 +59,25 @@ export default function Home() {
     setQi(Math.max(0, idx - 1))
   }
 
-  const heroImage = c.get('home.hero.image', '/images/hero-both-churches.jpg')
+  // Phones get a portrait version (Tenure above Fieldstown); a photo chosen in Edit mode is used everywhere
+  const isPhone = useMediaQuery('(max-width: 700px)')
+  const customHero = c.get('home.hero.image', null)
+  const heroImage = customHero || (isPhone ? '/images/hero-both-churches-mobile.jpg' : '/images/hero-both-churches.jpg')
 
   return (
     <div>
-      <div style={{
+      <div className="hero" style={{
         backgroundImage: `url(${heroImage})`,
         backgroundSize: 'cover', backgroundPosition: 'center',
-        height: 542, position: 'relative',
+        minHeight: 542, position: 'relative',
         display: 'flex', flexDirection: 'column',
       }}>
         <Nav transparent />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(20,15,10,0.82) 0%, rgba(20,15,10,0.25) 55%, rgba(20,15,10,0.05) 100%)' }} />
         <ChangePhoto id="home.hero.image" label="Change top photo" style={{ position: 'absolute', top: 96, right: 24 }} />
-        <div style={{ position: 'relative', zIndex: 2, padding: '0 64px 60px', marginTop: 'auto', maxWidth: 880, display: 'flex', flexDirection: 'column', gap: 22 }}>
+        <div className="hero-content" style={{ position: 'relative', zIndex: 2, padding: '0 var(--pad) 60px', marginTop: 'auto', maxWidth: 880, display: 'flex', flexDirection: 'column', gap: 22 }}>
           <Editable as="h1" id="home.hero.title" def={'A parish centred on Christ,\nablaze with His love.'}
-            style={{ fontSize: 48, lineHeight: 1.1, color: '#fff', fontWeight: 800, margin: 0 }} />
+            style={{ fontSize: 'clamp(30px, 8.4vw, 48px)', lineHeight: 1.1, color: '#fff', fontWeight: 800, margin: 0 }} />
           <Editable as="p" id="home.hero.sub" def="Serving Tenure and Fieldstown as one parish family — welcoming all who come to worship, celebrate, and grieve together."
             style={{ fontSize: 17, color: '#F0E8DC', lineHeight: 1.6, margin: 0, maxWidth: 520 }} />
           <div style={{ display: 'flex', gap: 14 }}>
@@ -85,15 +89,15 @@ export default function Home() {
         </div>
       </div>
 
-      <div style={{ padding: '0 64px', display: 'flex', justifyContent: 'center', transform: 'translateY(-40px)' }}>
-        <div style={{ width: '100%', maxWidth: 1180, background: '#fff', borderRadius: 20, boxShadow: '0 20px 40px rgba(25,23,20,0.14)', padding: '34px 44px', display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 32 }}>
+      <div style={{ padding: '0 var(--pad)', display: 'flex', justifyContent: 'center', transform: 'translateY(-40px)' }}>
+        <div className="mass-grid" style={{ width: '100%', maxWidth: 1180, background: '#fff', borderRadius: 20, boxShadow: '0 20px 40px rgba(25,23,20,0.14)', padding: '34px 44px', display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 32 }}>
           <MassColumn
             id="home.mass.ten"
             defName="The Church of The Immaculate Conception, Tenure (TEN)"
             defWeekday="Tue 9.30am, Fri 7pm"
             defWeekend="Sun 11.30am"
           />
-          <div style={{ borderLeft: '1px solid var(--line)', borderRight: '1px solid var(--line)', padding: '0 32px' }}>
+          <div className="mass-mid" style={{ borderLeft: '1px solid var(--line)', borderRight: '1px solid var(--line)', padding: '0 32px' }}>
             <MassColumn
               id="home.mass.ft"
               defName="The Church of The Nativity of Our Lady, Fieldstown (F/T)"
@@ -110,10 +114,10 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="container" style={{ padding: '40px 64px 80px', display: 'flex', justifyContent: 'center', gap: 80, flexWrap: 'wrap' }}>
+      <div className="container stats" style={{ padding: '40px var(--pad) clamp(48px, 10vw, 80px)', display: 'flex', justifyContent: 'center', gap: 80, flexWrap: 'wrap' }}>
         {[['1,500+', 'PARISHIONERS'], ['2', 'CHURCHES, ONE FAMILY'], ['5th C.', 'ROOTS AT MONASTERBOICE'], ['4', 'MASSES EVERY WEEK']].map(([n, l], i) => (
           <div key={i} style={{ textAlign: 'center' }}>
-            <Editable as="div" id={`home.stat.${i + 1}.num`} def={n} multiline={false} style={{ fontSize: 42, fontWeight: 800 }} />
+            <Editable as="div" id={`home.stat.${i + 1}.num`} def={n} multiline={false} style={{ fontSize: 'clamp(32px, 9vw, 42px)', fontWeight: 800 }} />
             <Editable as="div" id={`home.stat.${i + 1}.label`} def={l} multiline={false} style={{ fontSize: 13, color: 'var(--faint)', letterSpacing: '0.04em' }} />
           </div>
         ))}
@@ -145,7 +149,7 @@ export default function Home() {
         defImage="/images/ordination.jpg"
       />
 
-      <div style={{
+      <div className="quote-band" style={{
         width: '100%', height: 420, marginTop: 60, position: 'relative',
         backgroundImage: `url(${quote.image})`, backgroundSize: 'cover', backgroundPosition: 'center 20%',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -154,7 +158,7 @@ export default function Home() {
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(20,15,10,0.55)' }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 680, textAlign: 'center', padding: '0 40px', display: 'flex', flexDirection: 'column', gap: 14 }}>
           <EditText key={`t${idx}`} as="div" value={quote.text} onCommit={t => updateQuote({ text: t })}
-            style={{ fontSize: 28, color: '#fff', fontWeight: 700, lineHeight: 1.45 }} />
+            style={{ fontSize: 'clamp(19px, 5.2vw, 28px)', color: '#fff', fontWeight: 700, lineHeight: 1.45 }} />
           <div style={{ fontSize: 14, color: '#E7DFD2', letterSpacing: '0.06em', fontWeight: 600 }}>
             — <EditText key={`s${idx}`} value={quote.source} onCommit={t => updateQuote({ source: t })} multiline={false} />
           </div>
@@ -172,14 +176,14 @@ export default function Home() {
         )}
       </div>
 
-      <div style={{ padding: '80px 64px', display: 'flex', flexDirection: 'column', gap: 36, alignItems: 'center' }}>
+      <div style={{ padding: 'clamp(48px, 10vw, 80px) var(--pad)', display: 'flex', flexDirection: 'column', gap: 36, alignItems: 'center' }}>
         <div style={{ width: '100%', maxWidth: 1200, display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-          <Editable as="h2" id="home.news.title" def="Latest news" multiline={false} style={{ fontSize: 30, fontWeight: 800, margin: 0 }} />
+          <Editable as="h2" id="home.news.title" def="Latest news" multiline={false} style={{ fontSize: 'clamp(24px, 6vw, 30px)', fontWeight: 800, margin: 0 }} />
           <SmartLink to="/news" className="textlink" style={{ fontSize: 15 }}>
             <Editable id="home.news.link" def="View all news →" multiline={false} />
           </SmartLink>
         </div>
-        <div style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 28 }}>
+        <div className="grid-3" style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 28 }}>
           {(news.length ? news : placeholderNews).map((n, i) => (
             <Link key={n.id || i} to={postPath(n)} className="photocard" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {n.image_url ? (
@@ -214,11 +218,11 @@ function MassColumn({ id, defName, defWeekday, defWeekend }) {
 
 function Section({ id, defTag, defTitle, defText, defLink, linkTo, defImage, reverse = false }) {
   return (
-    <div style={{ padding: '64px 64px 20px', display: 'flex', alignItems: 'center', gap: 64, flexDirection: reverse ? 'row-reverse' : 'row', flexWrap: 'wrap' }}>
-      <EditableImg id={`${id}.image`} def={defImage} wrapperStyle={{ flex: 1, minWidth: 300 }} style={{ height: 340, objectFit: 'cover', borderRadius: 20 }} />
-      <div style={{ flex: 1, minWidth: 280, display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className="split" style={{ padding: 'clamp(40px, 9vw, 64px) var(--pad) 20px', display: 'flex', alignItems: 'center', gap: 'var(--gap-lg)', flexDirection: reverse ? 'row-reverse' : 'row', flexWrap: 'wrap' }}>
+      <EditableImg id={`${id}.image`} def={defImage} wrapperStyle={{ flex: 1, minWidth: 'min(300px, 100%)' }} style={{ height: 340, objectFit: 'cover', borderRadius: 20 }} />
+      <div style={{ flex: 1, minWidth: 'min(280px, 100%)', display: 'flex', flexDirection: 'column', gap: 16 }}>
         <Editable as="div" id={`${id}.tag`} def={defTag} multiline={false} style={{ fontSize: 13, letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 700 }} />
-        <Editable as="h3" id={`${id}.title`} def={defTitle} style={{ fontSize: 30, fontWeight: 800, margin: 0 }} />
+        <Editable as="h3" id={`${id}.title`} def={defTitle} style={{ fontSize: 'clamp(24px, 6vw, 30px)', fontWeight: 800, margin: 0 }} />
         <Editable as="p" id={`${id}.text`} def={defText} style={{ fontSize: 16, color: 'var(--muted)', lineHeight: 1.7, margin: 0 }} />
         <SmartLink to={linkTo} className="textlink" style={{ fontSize: 15 }}>
           <Editable id={`${id}.link`} def={defLink} multiline={false} /> →

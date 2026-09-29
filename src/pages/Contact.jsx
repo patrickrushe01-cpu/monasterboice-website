@@ -19,26 +19,26 @@ export default function Contact() {
   return (
     <div>
       <Nav />
-      <div style={{ background: 'var(--cream)', padding: '56px 64px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ background: 'var(--cream)', padding: 'clamp(36px, 8vw, 56px) var(--pad)', display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ fontSize: 13, color: 'var(--faint)' }}>Home / Contact</div>
-        <Editable as="h1" id="contact.title" def="Get in Touch" multiline={false} style={{ fontSize: 40, fontWeight: 800, margin: 0 }} />
+        <Editable as="h1" id="contact.title" def="Get in Touch" multiline={false} style={{ fontSize: 'clamp(30px, 8vw, 40px)', fontWeight: 800, margin: 0 }} />
         <Editable as="p" id="contact.intro" def="Whether it's a sacrament, a bulletin notice, or just a question — we're here."
           style={{ fontSize: 16, color: 'var(--muted)', maxWidth: 560, margin: 0 }} />
       </div>
 
-      <div style={{ padding: '56px 64px 24px', display: 'flex', justifyContent: 'center' }}>
-        <div style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 24 }}>
+      <div style={{ padding: 'clamp(36px, 8vw, 56px) var(--pad) 24px', display: 'flex', justifyContent: 'center' }}>
+        <div className="grid-3" style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 24 }}>
           <InfoCard id="contact.phone" label="Phone" value="087 379 1443" />
           <InfoCard id="contact.email" label="Email" value="monasterboiceparishoffice@gmail.com" />
           <InfoCard id="contact.hours" label="Office Hours" value="Monday–Thursday, 9am–1pm" />
         </div>
       </div>
 
-      <div style={{ padding: '40px 64px 64px', display: 'flex', justifyContent: 'center' }}>
-        <div style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 56, alignItems: 'start', flexWrap: 'wrap' }}>
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20, minWidth: 280 }}>
+      <div style={{ padding: '40px var(--pad) clamp(40px, 9vw, 64px)', display: 'flex', justifyContent: 'center' }}>
+        <div className="grid-2" style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 56, alignItems: 'start', flexWrap: 'wrap' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20, minWidth: 'min(280px, 100%)' }}>
             <Editable as="h3" id="contact.form.title" def="Send a message" multiline={false} style={{ fontSize: 24, fontWeight: 800, margin: 0 }} />
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            <div className="grid-2-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <input required placeholder="Your name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
               <input required type="email" placeholder="Your email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
             </div>
@@ -51,7 +51,7 @@ export default function Contact() {
             {status === 'error' && <div style={{ color: '#8B1E3F', fontSize: 14 }}>Something went wrong — please try again or call the office directly.</div>}
           </form>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, minWidth: 260 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, minWidth: 'min(260px, 100%)' }}>
             <Editable as="div" id="contact.churches.title" def="CHURCHES IN THE PARISH" multiline={false} style={{ fontSize: 13, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700 }} />
             <ChurchBlock id="contact.ten" name="The Church of The Immaculate Conception, Tenure (TEN)" address="Tenure, Dunleer, Co. Louth, A92 D344" />
             <div style={{ height: 1, background: 'var(--line)' }} />

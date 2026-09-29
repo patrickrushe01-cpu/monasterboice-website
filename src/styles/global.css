@@ -1,4 +1,6 @@
 :root {
+  --pad: 64px;      /* side margin of every page section; shrinks on phones */
+  --gap-lg: 64px;
   --ink: #191714;
   --accent: #C1622E;
   --accent-dark: #96491F;
@@ -11,8 +13,13 @@
 
 * { box-sizing: border-box; }
 
+html { -webkit-text-size-adjust: 100%; }
+img { max-width: 100%; }
+
 body {
   margin: 0;
+  overflow-x: clip;
+  overflow-wrap: break-word; /* long words such as email addresses wrap instead of running off a small screen */
   font-family: 'Manrope', sans-serif;
   background: var(--white);
   color: var(--ink);
@@ -184,3 +191,98 @@ input, textarea {
 .article table { border-collapse: collapse; width: 100%; font-size: 15px; }
 .article th, .article td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
 .article th { background: var(--cream); font-weight: 800; }
+
+
+/* ================= Site navigation ================= */
+.site-nav {
+  width: 100%;
+  padding: 22px var(--pad);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  z-index: 30;
+}
+.site-nav:not(.site-nav-transparent) { border-bottom: 1px solid var(--line); }
+.site-logo { font-size: 20px; font-weight: 800; line-height: 1.2; }
+.site-nav-links { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; }
+.site-burger {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 10px 6px;
+  margin: -10px -6px;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  min-height: 44px;
+}
+.site-mobile-menu { display: none; }
+
+@media (max-width: 1100px) {
+  .site-nav-links, .site-nav-cta { display: none; }
+  .site-burger { display: inline-flex; }
+  .site-mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #191714;
+    padding: 12px var(--pad) 26px;
+    box-shadow: 0 24px 40px rgba(0, 0, 0, 0.35);
+  }
+  .site-mobile-link { color: #fff; font-size: 18px; font-weight: 700; padding: 14px 14px; border-radius: 12px; }
+  .site-mobile-link.active { background: var(--accent); }
+  .site-mobile-cta { margin-top: 12px; text-align: center; padding: 16px 24px; }
+}
+
+/* ================= Responsive layout ================= */
+@media (max-width: 900px) {
+  :root { --pad: 32px; --gap-lg: 40px; }
+}
+@media (max-width: 800px) {
+  .grid-3, .grid-2 { grid-template-columns: minmax(0, 1fr) !important; }
+
+  /* picture + text sections stack: picture first, then words */
+  .split { flex-direction: column !important; gap: 24px !important; padding-top: 40px !important; align-items: stretch !important; }
+  .split > * { flex: none !important; width: 100% !important; min-width: 0 !important; }
+  .split img { height: 240px !important; }
+
+  /* Mass times card: one column, with thin lines between the sections */
+  .mass-grid { grid-template-columns: minmax(0, 1fr) !important; padding: 26px 22px !important; gap: 0 !important; }
+  .mass-mid { border-left: 0 !important; border-right: 0 !important; border-top: 1px solid var(--line) !important; border-bottom: 1px solid var(--line) !important; padding: 22px 0 !important; margin: 22px 0 !important; }
+
+  /* the four figures sit in a neat 2 x 2 */
+  .stats { display: grid !important; grid-template-columns: 1fr 1fr; gap: 28px 12px !important; padding-top: 24px !important; padding-bottom: 48px !important; }
+
+  .quote-band { height: auto !important; min-height: 380px; padding: 64px 0 110px; }
+  .enq-box { padding: 28px 24px !important; }
+}
+@media (max-width: 600px) {
+  :root { --pad: 20px; --gap-lg: 28px; }
+  .site-logo { font-size: 18px; }
+  .site-nav { padding-top: 16px; padding-bottom: 16px; }
+  .hero-content { padding-top: 36px !important; padding-bottom: 72px !important; }
+}
+@media (max-width: 520px) {
+  .grid-2-sm { grid-template-columns: minmax(0, 1fr) !important; }
+  .edit-bar-active { left: 12px; right: 12px; transform: none; max-width: none; bottom: 12px; padding: 10px 12px; }
+  .edit-bar-idle { right: 12px; bottom: 12px; }
+}
+
+/* Keep the hero motto tidy: no lonely word on a line of its own */
+.hero-content h1 { text-wrap: balance; }
+@media (max-width: 700px) {
+  .hero { min-height: 680px !important; }
+  .hero-content { padding-bottom: 78px !important; }
+}
+
+/* footer links line up with their heading, with comfortable tap height */
+.footer-links .navlink { padding: 8px 0; border-radius: 6px; }

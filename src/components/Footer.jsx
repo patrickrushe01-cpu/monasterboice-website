@@ -2,8 +2,8 @@ import { Editable, SmartLink } from '../lib/content.jsx'
 
 export default function Footer() {
   return (
-    <div style={{ width: '100%', background: 'var(--ink)', boxSizing: 'border-box', padding: '56px 64px 30px', display: 'flex', flexDirection: 'column', gap: 32 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 40 }}>
+    <div style={{ width: '100%', background: 'var(--ink)', boxSizing: 'border-box', padding: 'clamp(36px, 8vw, 56px) var(--pad) 30px', display: 'flex', flexDirection: 'column', gap: 32 }}>
+      <div className="grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 40 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <Editable as="h3" id="footer.name" def="Monasterboice Parish" multiline={false} style={{ fontSize: 18, color: '#fff', fontWeight: 800, margin: 0 }} />
           <Editable as="div" id="footer.address" def={'The Parochial House\nTenure, Dunleer, Co. Louth\nA92 D344'} style={{ fontSize: 14, color: '#B5AC9C', lineHeight: 1.7 }} />
@@ -20,7 +20,7 @@ export default function Footer() {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <Editable as="h3" id="footer.links.title" def="Quick links" multiline={false} style={{ fontSize: 14, color: 'var(--accent)', fontWeight: 700, margin: 0 }} />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: 14, color: '#B5AC9C' }}>
+          <div className="footer-links" style={{ display: 'flex', flexDirection: 'column', gap: 0, fontSize: 14, color: '#B5AC9C' }}>
             <SmartLink to="/bulletins" className="navlink"><Editable id="footer.l1" def="Parish Bulletins" multiline={false} /></SmartLink>
             <SmartLink to="/news" className="navlink"><Editable id="footer.l2" def="Latest News" multiline={false} /></SmartLink>
             <SmartLink to="/webcam" className="navlink"><Editable id="footer.l5" def="Watch Mass Live" multiline={false} /></SmartLink>

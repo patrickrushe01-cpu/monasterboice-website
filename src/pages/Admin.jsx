@@ -211,11 +211,11 @@ function NewsForm({ post, onDone, onCancel }) {
       )}
       <textarea rows={2} placeholder="Short summary shown on the News page (optional — made from the story if left blank)" value={excerpt} onChange={e => setExcerpt(e.target.value)} />
       <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-        <label style={{ fontSize: 13, color: 'var(--muted)', flex: 1, minWidth: 180 }}>
+        <label style={{ fontSize: 13, color: 'var(--muted)', flex: 1, minWidth: 'min(180px, 100%)' }}>
           Date
           <input type="date" value={publishedAt} onChange={e => setPublishedAt(e.target.value)} style={{ marginTop: 6 }} />
         </label>
-        <label style={{ fontSize: 13, color: 'var(--muted)', flex: 1, minWidth: 180 }}>
+        <label style={{ fontSize: 13, color: 'var(--muted)', flex: 1, minWidth: 'min(180px, 100%)' }}>
           Type of story
           <select value={category} onChange={e => setCategory(e.target.value)} style={{ marginTop: 6 }}>
             {cats.map(c => <option key={c} value={c}>{c}</option>)}

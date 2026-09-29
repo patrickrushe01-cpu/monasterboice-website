@@ -26,22 +26,22 @@ export default function Resources() {
   return (
     <div>
       <Nav />
-      <div style={{ background: 'var(--cream)', padding: '56px 64px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ background: 'var(--cream)', padding: 'clamp(36px, 8vw, 56px) var(--pad)', display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ fontSize: 13, color: 'var(--faint)' }}>Home / Resources</div>
-        <Editable as="h1" id="resources.title" def="Resources" multiline={false} style={{ fontSize: 40, fontWeight: 800, margin: 0 }} />
+        <Editable as="h1" id="resources.title" def="Resources" multiline={false} style={{ fontSize: 'clamp(30px, 8vw, 40px)', fontWeight: 800, margin: 0 }} />
         <Editable as="p" id="resources.intro"
           def="A list of important websites and other resources which you might find useful."
           style={{ fontSize: 16, color: 'var(--muted)', maxWidth: 620, margin: 0 }} />
       </div>
 
-      <div style={{ padding: '40px 64px 80px', display: 'flex', justifyContent: 'center' }}>
+      <div style={{ padding: '40px var(--pad) clamp(48px, 10vw, 80px)', display: 'flex', justifyContent: 'center' }}>
         <div style={{ width: '100%', maxWidth: 1100 }}>
           <EditableLines
             id="resources.list"
             def={defaultResources}
             hint="One website per line, written like: Name | https://web-address | Short description. Press Enter for a new line."
             render={lines => (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 20 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 20 }}>
                 {lines.map((line, i) => {
                   const { name, url, desc } = parse(line)
                   const body = (
