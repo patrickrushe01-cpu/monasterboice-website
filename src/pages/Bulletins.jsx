@@ -44,7 +44,7 @@ export default function Bulletins() {
                 <div style={{ fontSize: 14, color: '#B5AC9C' }}>Both churches · PDF</div>
               </div>
             </div>
-            <a href={latest.file_url} target="_blank" rel="noreferrer" className="btn">Download PDF</a>
+            <a href={latest.file_url} target="_blank" rel="noopener noreferrer" className="btn">Download PDF</a>
           </div>
         </div>
       ) : (
@@ -65,7 +65,7 @@ export default function Bulletins() {
                     </div>
                   </div>
                 </div>
-                <a href={b.file_url} target="_blank" rel="noreferrer" className="textlink" style={{ fontSize: 14, whiteSpace: 'nowrap' }}>Download →</a>
+                <a href={b.file_url} target="_blank" rel="noopener noreferrer" className="textlink" style={{ fontSize: 14, whiteSpace: 'nowrap' }}>Download →</a>
               </div>
             ))}
           </div>

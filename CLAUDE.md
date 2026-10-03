@@ -42,6 +42,9 @@ at WordPress and will be switched over later, once content is finalized.
 - Ways to give (envelopes, online giving via the Archdiocese of Armagh Payzone link, bank transfer, legacies), Charitable
   Donation Scheme / CHY3 tax relief, parish accounts, fees & charges (amounts deliberately NOT stated — "contact the Parish Office"),
   Parish Finance Council members, and finance enquiries.
+- Revenue's blank donor forms live in `public/forms/` (CHY3 enduring certificate = 5 years, CHY4 annual certificate = 1 year) and are linked from
+  the tax-relief section via `<LinkButton>` defaults in `SupportUs.jsx`. Staff can swap a form for a newer PDF in Edit mode (Upload a PDF instead).
+  The tax-relief maths on the page follows Revenue's own worked example: gifts are grossed up at 31% (€1,000 counts as €1,449.27, i.e. about +45%).
 - Parish accounts PDFs live in the `parish_accounts` table (year + file_url), uploaded from the Admin page; latest year is featured.
 - `vercel.json` redirects old WordPress addresses (/support-the-parish, /contact-us, /parish-bulletin, /latest-news, /welcome).
 

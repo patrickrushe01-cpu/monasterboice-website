@@ -261,7 +261,7 @@ function BulletinSection() {
             <div key={b.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', border: '1px solid var(--line)', borderRadius: 12 }}>
               <div style={{ fontWeight: 700, fontSize: 15 }}>{new Date(b.issue_date).toLocaleDateString('en-IE', { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' })}</div>
               <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                <a href={b.file_url} target="_blank" rel="noreferrer" className="textlink" style={{ fontSize: 13 }}>View</a>
+                <a href={b.file_url} target="_blank" rel="noopener noreferrer" className="textlink" style={{ fontSize: 13 }}>View</a>
                 <button onClick={() => handleDelete(b.id)} style={{ background: 'none', border: 'none', color: '#8B1E3F', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>Delete</button>
               </div>
             </div>
@@ -372,7 +372,7 @@ function AccountsSection() {
             <div key={r.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', border: '1px solid var(--line)', borderRadius: 12 }}>
               <div style={{ fontWeight: 700, fontSize: 15 }}>{r.year}</div>
               <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                <a href={r.file_url} target="_blank" rel="noreferrer" className="textlink" style={{ fontSize: 13 }}>View</a>
+                <a href={r.file_url} target="_blank" rel="noopener noreferrer" className="textlink" style={{ fontSize: 13 }}>View</a>
                 <button onClick={() => handleDelete(r.id, r.year)} style={{ background: 'none', border: 'none', color: '#8B1E3F', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>Delete</button>
               </div>
             </div>

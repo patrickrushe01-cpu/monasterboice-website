@@ -242,7 +242,7 @@ export function LinkButton({ id, def = '', className = 'btn', style, children })
   const fileInput = useRef(null)
   if (!c.editing) {
     if (!url) return null
-    return <a href={url} target="_blank" rel="noreferrer" className={className} style={style}>{children}</a>
+    return <a href={url} target="_blank" rel="noopener noreferrer" className={className} style={style}>{children}</a>
   }
   return (
     <span style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>

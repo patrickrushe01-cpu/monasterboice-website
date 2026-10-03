@@ -6,6 +6,9 @@ import { Editable, EditableLines, LinkButton } from '../lib/content.jsx'
 
 // Archdiocese of Armagh online giving (Republic of Ireland parishes)
 const DONATE_URL = 'https://platform.payzone.ie/customer/11154/product-list'
+// Revenue's blank donor forms, kept in public/forms (the CHY3 "enduring" and CHY4 "annual" certificates)
+const CHY3_URL = '/forms/CHY3-enduring-certificate.pdf'
+const CHY4_URL = '/forms/CHY4-annual-certificate.pdf'
 // Revenue's explanation of the Charitable Donation Scheme
 const REVENUE_URL = 'https://www.revenue.ie/en/companies-and-charities/charities-and-sports-bodies/charitable-donation-scheme/index.aspx'
 
@@ -105,13 +108,13 @@ export default function SupportUs() {
             <Editable as="div" id="support.tax.tag" def="TAX RELIEF ON YOUR DONATION" multiline={false} style={small} />
             <Editable as="h2" id="support.tax.title" def="Make your gift go further, at no cost to you" multiline={false} style={h2} />
             <Editable as="p" id="support.tax.text"
-              def="Under the Charitable Donation Scheme, if you pay Irish income tax (PAYE or self-assessed) and your donations to the parish total €250 or more in a calendar year, the parish can claim back the tax you have already paid on them from Revenue. That adds roughly 31% to your gift — a €250 donation is worth about €362 to the parish — and it costs you nothing extra."
+              def="Under the Charitable Donation Scheme, if you pay Irish income tax (PAYE or self-assessed) and your donations to the parish total €250 or more in a calendar year, the parish can claim back the tax you have already paid on them from Revenue. That adds almost 45% to the value of your gift — a €250 donation is worth about €362 to the parish — and it costs you nothing extra."
               style={lead} />
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 22 }}>
             {[
               ['1', 'Give in a way that is recorded', 'Parish envelopes, online giving, bank transfer or standing order all qualify. Loose cash in the collection cannot be claimed.'],
-              ['2', 'Sign a CHY3 form', 'The CHY3 “enduring certificate” lets the parish claim on your donations for five years. You will need your PPS number. It does not oblige you to keep giving.'],
+              ['2', 'Sign a CHY3 or CHY4 form', 'The CHY3 “enduring certificate” covers five years of donations; the CHY4 “annual certificate” covers one year. You will need your PPS number, and you must have paid at least that much Irish income tax. Neither form obliges you to keep giving.'],
               ['3', 'Return it to the Parish Office', 'Hand it in at the Parish Office or send it to us. The parish takes care of the claim with Revenue.'],
             ].map(([n, t, x]) => (
               <div key={n} style={card}>
@@ -122,10 +125,11 @@ export default function SupportUs() {
             ))}
           </div>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'flex-start' }}>
-            <LinkButton id="support.chy3" def="" className="btn"><Editable id="support.chy3.label" def="Download the CHY3 form" multiline={false} /></LinkButton>
+            <LinkButton id="support.chy3" def={CHY3_URL} className="btn"><Editable id="support.chy3.label" def="CHY3 form — covers 5 years (PDF)" multiline={false} /></LinkButton>
+            <LinkButton id="support.chy4" def={CHY4_URL} className="btn"><Editable id="support.chy4.label" def="CHY4 form — covers 1 year (PDF)" multiline={false} /></LinkButton>
             <LinkButton id="support.revenue" def={REVENUE_URL} className="btn-outline"><Editable id="support.revenue.label" def="How the scheme works (Revenue.ie)" multiline={false} /></LinkButton>
           </div>
-          <Editable as="p" id="support.tax.note" def="Not sure whether you qualify, or would like a form posted to you? Please contact the Parish Office."
+          <Editable as="p" id="support.tax.note" def="The form asks for the name of the charity — the Parish Office will give you the exact name to write. Not sure whether you qualify, or would like a form posted to you? Please contact the Parish Office. The tax refunded goes to the parish, so you cannot also claim that relief yourself."
             style={{ ...lead, fontSize: 14 }} />
         </div>
       </div>
@@ -146,7 +150,7 @@ export default function SupportUs() {
                 <div style={{ fontSize: 12, letterSpacing: '0.1em', color: 'var(--accent)', fontWeight: 700, marginBottom: 6 }}>LATEST ACCOUNTS</div>
                 <div style={{ fontSize: 24, fontWeight: 800, color: '#fff' }}>Parish Accounts {latest.year}</div>
               </div>
-              <a href={latest.file_url} target="_blank" rel="noreferrer" className="btn">Download PDF</a>
+              <a href={latest.file_url} target="_blank" rel="noopener noreferrer" className="btn">Download PDF</a>
             </div>
           ) : (
             accounts && (
@@ -160,7 +164,7 @@ export default function SupportUs() {
               <div style={{ fontSize: 13, letterSpacing: '0.06em', color: 'var(--faint)', fontWeight: 700, marginBottom: 10 }}>EARLIER YEARS</div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(190px, 100%), 1fr))', gap: 12 }}>
                 {earlier.map(a => (
-                  <a key={a.id} href={a.file_url} target="_blank" rel="noreferrer"
+                  <a key={a.id} href={a.file_url} target="_blank" rel="noopener noreferrer"
                     style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 18px', border: '1px solid var(--line)', borderRadius: 12, fontWeight: 700, fontSize: 15 }}>
                     <span>{a.year}</span>
                     <span style={{ color: 'var(--accent)', fontSize: 13 }}>PDF →</span>
