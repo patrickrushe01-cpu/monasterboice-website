@@ -50,6 +50,8 @@ export default function Admin() {
         </div>
         <Link to="/" className="btn">Go to the site and edit</Link>
       </div>
+      <MessagesSection />
+      <div style={{ height: 48 }} />
       <NewsSection />
       <div style={{ height: 48 }} />
       <BulletinSection />
@@ -463,6 +465,56 @@ function SubscribersSection() {
           {!showAll && rows.length > 15 && <button type="button" className="btn-outline" onClick={() => setShowAll(true)}>Show all {rows.length}</button>}
         </div>
       )}
+    </div>
+  )
+}
+
+function MessagesSection() {
+  const [rows, setRows] = useState(null)
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  useEffect(() => {
+    supabase.from('contact_messages').select('*').order('created_at', { ascending: false }).limit(200)
+      .then(({ data }) => setRows(data || []))
+  }, [refreshKey])
+
+  async function handleDelete(m) {
+    if (!window.confirm(`Delete the message from ${m.name}? This can't be undone.`)) return
+    await supabase.from('contact_messages').delete().eq('id', m.id)
+    setRefreshKey(k => k + 1)
+  }
+
+  // The address and subject come from the public, so they are encoded: a crafted address
+  // can't add extra recipients or headers to the reply.
+  const replyLink = m => `mailto:${encodeURIComponent(m.email || '')}?subject=${encodeURIComponent('Re: ' + (m.subject || ''))}`
+  const when = d => new Date(d).toLocaleString('en-IE', { timeZone: 'Europe/Dublin', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div style={{ fontSize: 13, letterSpacing: '0.06em', color: 'var(--faint)', fontWeight: 700 }}>
+        MESSAGES FROM THE CONTACT FORM{rows ? ` (${rows.length})` : ''}
+      </div>
+      {rows && rows.length === 0 && (
+        <div style={{ background: 'var(--cream)', borderRadius: 16, padding: '22px 28px', fontSize: 14, color: 'var(--muted)', lineHeight: 1.6 }}>
+          No messages yet. When someone uses the Contact form on the website, their message will appear here, newest first.
+        </div>
+      )}
+      {(rows || []).map(m => (
+        <div key={m.id} style={{ border: '1px solid var(--line)', borderRadius: 14, padding: '18px 22px', display: 'flex', flexDirection: 'column', gap: 10, background: '#fff' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ fontWeight: 800, fontSize: 16, minWidth: 0, overflowWrap: 'anywhere' }}>{m.subject}</div>
+            <div style={{ fontSize: 13, color: 'var(--faint)' }}>{when(m.created_at)}</div>
+          </div>
+          <div style={{ fontSize: 14, color: 'var(--muted)', overflowWrap: 'anywhere' }}>
+            From <strong style={{ color: 'var(--ink)' }}>{m.name}</strong> · {m.email}
+          </div>
+          <div style={{ fontSize: 15, lineHeight: 1.7, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>{m.message}</div>
+          <div style={{ display: 'flex', gap: 18, alignItems: 'center' }}>
+            <a href={replyLink(m)} className="textlink" style={{ fontSize: 14, fontWeight: 700 }}>Reply by email</a>
+            <button type="button" onClick={() => handleDelete(m)} style={{ background: 'none', border: 'none', color: '#8B1E3F', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>Delete</button>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }

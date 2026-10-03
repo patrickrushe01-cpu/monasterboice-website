@@ -7,11 +7,14 @@ import { Editable } from '../lib/content.jsx'
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [status, setStatus] = useState('idle') // idle | sending | sent | error
+  const [trap, setTrap] = useState('') // hidden field: real people never fill it in, spam bots do
 
   async function handleSubmit(e) {
     e.preventDefault()
+    if (trap) { setStatus('sent'); return } // looks like a bot: pretend it worked, send nothing
     setStatus('sending')
-    const { error } = await supabase.from('contact_messages').insert([form])
+    const clean = { name: form.name.trim(), email: form.email.trim(), subject: form.subject.trim(), message: form.message.trim() }
+    const { error } = await supabase.from('contact_messages').insert([clean])
     setStatus(error ? 'error' : 'sent')
     if (!error) setForm({ name: '', email: '', subject: '', message: '' })
   }
@@ -39,11 +42,13 @@ export default function Contact() {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20, minWidth: 'min(280px, 100%)' }}>
             <Editable as="h3" id="contact.form.title" def="Send a message" multiline={false} style={{ fontSize: 24, fontWeight: 800, margin: 0 }} />
             <div className="grid-2-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-              <input required placeholder="Your name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
-              <input required type="email" placeholder="Your email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
+              <input required maxLength={120} placeholder="Your name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
+              <input required maxLength={254} type="email" placeholder="Your email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
             </div>
-            <input required placeholder="Subject" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} />
-            <textarea required placeholder="How can we help?" rows={6} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
+            <input required maxLength={200} placeholder="Subject" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} />
+            <textarea required maxLength={4000} placeholder="How can we help?" rows={6} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} />
+            <input type="text" tabIndex={-1} autoComplete="off" aria-hidden="true" value={trap} onChange={e => setTrap(e.target.value)}
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
             <button type="submit" className="btn" style={{ background: 'var(--ink)', textAlign: 'center' }} disabled={status === 'sending'}>
               {status === 'sending' ? 'Sending…' : 'Send Message'}
             </button>

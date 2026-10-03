@@ -119,3 +119,11 @@ begin
 end; $$;
 revoke all on function public.subscribe_to_bulletin(text) from public;
 grant execute on function public.subscribe_to_bulletin(text) to anon, authenticated;
+
+-- ---------- Contact form: staff can delete messages; size limits ----------
+create policy "Admins delete contact" on public.contact_messages for delete to authenticated using (true);
+alter table public.contact_messages
+  add constraint contact_name_len    check (char_length(name)    between 1 and 120),
+  add constraint contact_email_len   check (char_length(email)   between 3 and 254),
+  add constraint contact_subject_len check (char_length(subject) between 1 and 200),
+  add constraint contact_message_len check (char_length(message) between 1 and 4000);

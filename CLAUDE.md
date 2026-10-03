@@ -74,6 +74,12 @@ at WordPress and will be switched over later, once content is finalized.
   swapped via `useMediaQuery('(max-width: 700px)')` in `src/lib/useMediaQuery.js`. A photo chosen in Edit mode overrides both.
 - Checked with a headless-browser script (not checked in) at 320/360/390/768/1024/1440px on every public page: no horizontal overflow anywhere.
 
+## Contact form messages
+- The Contact page saves to `contact_messages` (the public can only INSERT; only signed-in staff can read/delete). Admin has a **Messages** section at the top
+  listing them newest-first with "Reply by email" (the address is URL-encoded so a crafted address can't add recipients) and Delete. Nothing emails the office yet:
+  add an email alert after the domain switch (needs the sending domain verified in an email service such as Resend; DNS lives at WordPress.com).
+- Spam protection: hidden honeypot field in the form, input length limits (120/254/200/4000) mirrored by database CHECK constraints.
+
 ## Deployment workflow
 - GitHub repo: patrickrushe01-cpu/monasterboice-website, connected to Vercel for auto-deploy on push to `main`
 - After pulling changes that touch package.json run `npm install`.
