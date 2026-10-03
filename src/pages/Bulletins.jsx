@@ -115,7 +115,8 @@ function SubscribeBox() {
     e.preventDefault()
     if (trap) { setState('done'); return }
     setState('sending')
-    const { error } = await supabase.rpc('subscribe_to_bulletin', { p_email: email })
+    const { data, error } = await supabase.functions.invoke('subscribe', { body: { email } })
+    if (!error && data?.error) { setState('error'); return }
     setState(error ? 'error' : 'done')
   }
 
