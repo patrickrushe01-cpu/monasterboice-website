@@ -75,10 +75,16 @@ at WordPress and will be switched over later, once content is finalized.
 - Checked with a headless-browser script (not checked in) at 320/360/390/768/1024/1440px on every public page: no horizontal overflow anywhere.
 
 ## Contact form messages
-- The Contact page saves to `contact_messages` (the public can only INSERT; only signed-in staff can read/delete). Admin has a **Messages** section at the top
-  listing them newest-first with "Reply by email" (the address is URL-encoded so a crafted address can't add recipients) and Delete. Nothing emails the office yet:
-  add an email alert after the domain switch (needs the sending domain verified in an email service such as Resend; DNS lives at WordPress.com).
-- Spam protection: hidden honeypot field in the form, input length limits (120/254/200/4000) mirrored by database CHECK constraints.
+- The Contact page sends messages to the `contact` Edge Function (source in `supabase/functions/contact/index.ts`), which validates them, SAVES them to
+  `contact_messages` (shown in Admin > Messages: newest first, "Reply by email" with the address URL-encoded, Delete) and EMAILS the office via Resend.
+  Replying to the alert answers the sender (Reply-To). Email is plain text only. If email fails the message is still saved.
+- Secrets (Supabase dashboard > Edge Functions > Secrets): `RESEND_API_KEY`, `CONTACT_NOTIFY_TO` (the office Gmail), `CONTACT_FROM`
+  (e.g. `Monasterboice Parish website <website@domain>`, on a domain verified in Resend). Currently sends from the already-verified `mycoffeepassports.com`;
+  after the domain switch, verify `monasterboiceparish.com` in Resend (add the records at WordPress.com DNS) and change `CONTACT_FROM` — no code change needed.
+- Once the website sends via the function, the public INSERT policy on `contact_messages` should be dropped so only the function (service role) can write:
+  `drop policy "Public submit contact" on public.contact_messages;`
+- Spam/size protection: hidden honeypot in the form, input limits 120/254/200/4000 enforced in the form, the function and database CHECK constraints.
+- Every Edge Function that the browser calls MUST answer the CORS preflight (OPTIONS) — `subscribe` and `contact` both do; test this on the LIVE function, not only server-to-server.
 
 ## Deployment workflow
 - GitHub repo: patrickrushe01-cpu/monasterboice-website, connected to Vercel for auto-deploy on push to `main`

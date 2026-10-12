@@ -1,22 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Nav from '../components/Nav.jsx'
 import Footer from '../components/Footer.jsx'
 import { supabase } from '../lib/supabaseClient.js'
-import { Editable } from '../lib/content.jsx'
+import { Editable, useContent } from '../lib/content.jsx'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [status, setStatus] = useState('idle') // idle | sending | sent | error
   const [trap, setTrap] = useState('') // hidden field: real people never fill it in, spam bots do
+  const c = useContent()
+  const phone = c.get('contact.phone.value', '087 379 1443')
+  const resultRef = useRef(null)
+
+  // bring the result (thank-you or problem) into view, so it can't be missed on a phone
+  useEffect(() => {
+    if (status === 'sent' || status === 'error') resultRef.current?.scrollIntoView?.({ behavior: 'smooth', block: 'center' })
+  }, [status])
 
   async function handleSubmit(e) {
     e.preventDefault()
     if (trap) { setStatus('sent'); return } // looks like a bot: pretend it worked, send nothing
     setStatus('sending')
     const clean = { name: form.name.trim(), email: form.email.trim(), subject: form.subject.trim(), message: form.message.trim() }
-    const { error } = await supabase.from('contact_messages').insert([clean])
-    setStatus(error ? 'error' : 'sent')
-    if (!error) setForm({ name: '', email: '', subject: '', message: '' })
+    // the message goes through a small server function: it saves it for Admin and emails the office
+    const { data, error } = await supabase.functions.invoke('contact', { body: clean })
+    const failed = !!error || !data || data.error
+    setStatus(failed ? 'error' : 'sent')
+    if (!failed) setForm({ name: '', email: '', subject: '', message: '' })
   }
 
   return (
@@ -39,6 +49,14 @@ export default function Contact() {
 
       <div style={{ padding: '40px var(--pad) clamp(40px, 9vw, 64px)', display: 'flex', justifyContent: 'center' }}>
         <div className="grid-2" style={{ width: '100%', maxWidth: 1200, display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 56, alignItems: 'start', flexWrap: 'wrap' }}>
+          {status === 'sent' ? (
+            <div ref={resultRef} role="status" style={{ background: '#EAF3EC', border: '2px solid #2F5233', borderRadius: 20, padding: 'clamp(28px, 6vw, 44px)', display: 'flex', flexDirection: 'column', gap: 16, minWidth: 'min(280px, 100%)' }}>
+              <div aria-hidden="true" style={{ width: 60, height: 60, borderRadius: 30, background: '#2F5233', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 32, fontWeight: 800 }}>✓</div>
+              <div style={{ fontSize: 'clamp(24px, 6vw, 32px)', fontWeight: 800, lineHeight: 1.2, color: '#1F3A23' }}>Thank you — your message has been sent</div>
+              <div style={{ fontSize: 18, lineHeight: 1.6 }}>We'll be in touch soon. If it's urgent, please call the Parish Office on <strong>{phone}</strong>.</div>
+              <div><button type="button" className="btn-outline" onClick={() => setStatus('idle')}>Send another message</button></div>
+            </div>
+          ) : (
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20, minWidth: 'min(280px, 100%)' }}>
             <Editable as="h3" id="contact.form.title" def="Send a message" multiline={false} style={{ fontSize: 24, fontWeight: 800, margin: 0 }} />
             <div className="grid-2-sm" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
@@ -52,9 +70,13 @@ export default function Contact() {
             <button type="submit" className="btn" style={{ background: 'var(--ink)', textAlign: 'center' }} disabled={status === 'sending'}>
               {status === 'sending' ? 'Sending…' : 'Send Message'}
             </button>
-            {status === 'sent' && <div style={{ color: '#2F5233', fontSize: 14 }}>Thank you — we'll be in touch soon.</div>}
-            {status === 'error' && <div style={{ color: '#8B1E3F', fontSize: 14 }}>Something went wrong — please try again or call the office directly.</div>}
+            {status === 'error' && (
+              <div ref={resultRef} role="alert" style={{ background: '#FBEAEE', border: '2px solid #8B1E3F', borderRadius: 14, padding: '18px 22px', color: '#6B1530', fontSize: 16, fontWeight: 700, lineHeight: 1.5 }}>
+                Sorry — your message didn't go through. Please try again, or call the Parish Office on {phone}.
+              </div>
+            )}
           </form>
+          )}
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20, minWidth: 'min(260px, 100%)' }}>
             <Editable as="div" id="contact.churches.title" def="CHURCHES IN THE PARISH" multiline={false} style={{ fontSize: 13, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700 }} />
