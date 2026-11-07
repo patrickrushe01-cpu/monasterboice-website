@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import Nav from '../components/Nav.jsx'
 import Footer from '../components/Footer.jsx'
 import ArticleBody from '../components/ArticleBody.jsx'
+import ShareStory from '../components/ShareStory.jsx'
 import { supabase } from '../lib/supabaseClient.js'
 import { useContent } from '../lib/content.jsx'
 import { formatDate } from '../lib/news.js'
@@ -64,6 +65,7 @@ export default function NewsArticle() {
             <div style={{ width: '100%', maxWidth: 760 }}>
               {showHero && <img src={post.image_url} alt="" style={{ width: '100%', borderRadius: 18, marginBottom: 32, display: 'block' }} />}
               {post.body ? <ArticleBody text={post.body} /> : <p style={{ fontSize: 17, lineHeight: 1.75 }}>{post.excerpt}</p>}
+              <ShareStory post={post} />
               <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid var(--line)' }}>
                 <Link to="/news" className="textlink" style={{ fontSize: 15 }}>← All parish news</Link>
               </div>

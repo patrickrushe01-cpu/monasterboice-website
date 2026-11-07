@@ -104,3 +104,7 @@ at WordPress and will be switched over later, once content is finalized.
 - Quote band on homepage is a placeholder rotation (2-3 Scripture/saint quotes) — Paddy will supply
   the real set plus more parish-life photos to rotate through
 - News section seeded with the 6 real posts from the live WordPress site
+
+## Social links and sharing
+- `src/components/SocialLinks.jsx`: Facebook / Instagram / X buttons in the footer and on the Contact page. Addresses are editable ("Edit this page" → "Change … link"); keys `social.facebook.url`, `social.instagram.url`, `social.x.url`. Defaults are in the component.
+- `src/components/ShareStory.jsx`: Share buttons (Facebook, X, WhatsApp, Email) at the bottom of each news story. Always shares `https://www.monasterboiceparish.com/news/<slug>`.

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Nav from '../components/Nav.jsx'
 import Footer from '../components/Footer.jsx'
+import SocialLinks from '../components/SocialLinks.jsx'
 import { supabase } from '../lib/supabaseClient.js'
 import { Editable, useContent } from '../lib/content.jsx'
 
@@ -83,6 +84,9 @@ export default function Contact() {
             <ChurchBlock id="contact.ten" name="The Church of The Immaculate Conception, Tenure (TEN)" address="Tenure, Dunleer, Co. Louth, A92 D344" />
             <div style={{ height: 1, background: 'var(--line)' }} />
             <ChurchBlock id="contact.ft" name="The Church of The Nativity of Our Lady, Fieldstown (F/T)" address="Fieldstown, Co. Louth, A92 CH28" />
+            <div style={{ height: 1, background: 'var(--line)' }} />
+            <Editable as="div" id="contact.follow.title" def="FOLLOW THE PARISH" multiline={false} style={{ fontSize: 13, letterSpacing: '0.08em', color: 'var(--accent)', fontWeight: 700 }} />
+            <SocialLinks />
           </div>
         </div>
       </div>

@@ -286,3 +286,6 @@ input, textarea {
 
 /* footer links line up with their heading, with comfortable tap height */
 .footer-links .navlink { padding: 8px 0; border-radius: 6px; }
+
+.social-pill { transition: background 0.15s ease, border-color 0.15s ease; }
+.social-pill:hover { background: rgba(193,98,46,0.14); border-color: var(--accent) !important; }

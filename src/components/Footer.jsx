@@ -1,4 +1,5 @@
 import { Editable, SmartLink } from '../lib/content.jsx'
+import SocialLinks from './SocialLinks.jsx'
 
 export default function Footer() {
   return (
@@ -28,6 +29,8 @@ export default function Footer() {
             <SmartLink to="/support" className="navlink"><Editable id="footer.l3" def="Support the Parish" multiline={false} /></SmartLink>
             <SmartLink to="/contact" className="navlink"><Editable id="footer.l4" def="Contact Us" multiline={false} /></SmartLink>
           </div>
+          <Editable as="h3" id="footer.follow.title" def="Follow us" multiline={false} style={{ fontSize: 14, color: 'var(--accent)', fontWeight: 700, margin: '14px 0 0' }} />
+          <SocialLinks tone="dark" />
         </div>
       </div>
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 20, display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#7A7367', flexWrap: 'wrap', gap: 8 }}>
